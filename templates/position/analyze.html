@@ -1,100 +1,105 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>统计分析</title>
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../static/css/analyze.css">
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
-    <script src="https://cdn.bootcss.com/echarts/4.3.0/echarts.js"></script>
-    <script src="../../static/js/position/analyze.js"></script>
-</head>
-<body>
+{% extends 'base/base_top.html' %}
+
+{% block title %}  统计分析 {% endblock %}
+
+{% block link %}
+        <link rel="stylesheet" href="../../static/css/analyze.css">
+{%  endblock %}
 
 
 
 
+{%  block content %}
+    {#城市柱状图#}
+    {#工作经验饼图#}
+    {#学历饼图#}
+    {#词云#}
+    {#工资图#}
 
-{#城市柱状图#}
-{#工作经验饼图#}
-{#学历饼图#}
-{#词云#}
-{#工资图#}
+    <div id="alertmessage"></div>
 
-<div id="alertmessage"></div>
+{#    <div class="top" id="top">#}
+{#        <div style="width: 100%; height: 70px" id="iframepage" name="iframepage" ></div>#}
 
-<div class="top" id="top">
-    <div style="width: 100%; height: 70px" id="iframepage" name="iframepage" ></div>
-
-<div class="showMain">
-    <!-- 加载地图 -->
-    <div class="map" id="mapholder">
-        <div  id="qf" onclick="toolsControl()">
-            <i class="toolicon icon-quanfu" ></i>
+    <div class="showMain">
+        <!-- 加载地图 -->
+        <div class="map" id="mapholder">
+            <div  id="qf" onclick="toolsControl()">
+                <i class="toolicon icon-quanfu" ></i>
+            </div>
         </div>
-    </div>
 
 
-    <div class="caseInfoChart showMainModel" id="EX-aj"></div>
+        <div class="caseInfoChart showMainModel" id="EX-aj"></div>
 
-    <div class="caseVideo showMainModel">
-        <div id="divPlugin" class="plugin">
-
-        </div>
-    </div>
-
-    <div class="monthCaseChart showMainModel" id="monthly"></div>
-
-    <div class="admRegMonthCase showMainModel" id="xzqmonthly" style="padding-left: 10px;"></div>
-
-    <div class="monitorShowInfo showMainModel" id="ckcharts"></div>
-
-    <div class="weekCaseRate showMainModel" id="weekly"></div>
-
-
-
-
-
-<!--         修改弹窗开始 -->
-
-<div class="showCase1 showCase">
-
-    <div class="showCaseInfo container" style="">
-        <div class="showCaseInfoMain">
-            <div class="row">
-             <div class="col-md-12 caseList" >案件列表
-             <img src="../../../images/fold.png" alt="图片未找到!" title="展开" id="upAndD">
-
-             <span style="display:inline-block; float:right; cursor:pointer" onclick="closeSlideWin();">X</span>
-              </div>
+        <div class="caseWordCloud showMainModel">
+            <div id="divPlugin" class="plugin">
 
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col-md-12" style="
-width: 909px;
-padding-right: 0px;">
-                    <table id = "theadAndTbody" class="table">
+        <div class="monthCaseChart showMainModel" id="monthly"></div>
 
-                    </table>
+        <div class="admRegMonthCase showMainModel" id="xzqmonthly" style="padding-left: 10px;"></div>
+
+        <div class="monitorShowInfo showMainModel" id="ckcharts"></div>
+
+        <div class="weekCaseRate showMainModel" id="weekly"></div>
+
+
+
+
+
+    <!--         修改弹窗开始 -->
+
+    <div class="showCase1 showCase">
+
+        <div class="showCaseInfo container" style="">
+            <div class="showCaseInfoMain">
+                <div class="row">
+                 <div class="col-md-12 caseList" >案件列表
+                 <img src="../../../images/fold.png" alt="图片未找到!" title="展开" id="upAndD">
+
+                 <span style="display:inline-block; float:right; cursor:pointer" onclick="closeSlideWin();">X</span>
+                  </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12" style="
+    width: 909px;
+    padding-right: 0px;">
+                        <table id = "theadAndTbody" class="table">
+
+                        </table>
+                    </div>
                 </div>
             </div>
+
+        </div>
+    </div>
+
+    <!-- 修改弹窗结束 -->
+        </div>
+        <div class="exitBox"></div>
+        <script type="text/javascript" src="./js/controlEcharts.js" charset="UTF-8" ></script>
         </div>
 
-    </div>
-</div>
 
 
 
-<!-- 修改弹窗结束 -->
+{% endblock %}
 
 
 
-    </div>
-    <div class="exitBox"></div>
-    <script type="text/javascript" src="./js/controlEcharts.js" charset="UTF-8" ></script>
-    </div>
 
-</body>
-</html>
+
+
+{% block script %}
+    <script src="../../static/js/position/analyze.js"></script>
+
+{%  endblock %}
+
+
+
+

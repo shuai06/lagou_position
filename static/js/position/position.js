@@ -10,34 +10,14 @@ map.enableContinuousZoom();
 
 var gname = "";
 var geoc = new BMap.Geocoder();    // 逆地址解析
-// 启用室内图
-// var indoorManager = new BMapLib.IndoorManager(map);
-// indoorManager.enableIndoor();
-
-
-
-// function reverseAddress(pt) {
-//     geoc.getLocation(pt, function(rs){
-// 			var addComp = rs.addressComponents;
-// 			return addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
-//
-// })}
-
 // 城市列表工具条
 var size = new BMap.Size(10, 20);
 map.addControl(new BMap.CityListControl({
     anchor: BMAP_ANCHOR_TOP_LEFT,
     offset: size,
-    // 切换城市之前事件
-    // onChangeBefore: function(){
-    //    alert('before');
-    // },
-    // 切换城市之后事件
-    // onChangeAfter:function(){
-    //   alert('after');
-    // }
 }));
 
+heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20, "visible":true, "opacity":70});
 
 var data2 = '';
 var markersList = [];   // points
@@ -47,6 +27,7 @@ var points  = [];    // 热力图用的带权值的
 
 // 加载点数据  展示
 $("#ccc").click(function () {
+    heatmapOverlay.hide();
     $.ajax({
         url: "get_pos/",
         type:"POST",
@@ -208,7 +189,13 @@ function alertWin() {
 
 // pa数据
 $("#bbb").click(function (){
-            alertWin();
+       heatmapOverlay.hide();
+       if(markersArray){
+            for(let i=0; i<markersArray.length; i++){
+                markersArray[i].remove();  // delete marks
+            }
+        }
+       alertWin();
         // $(".Loading").show();
 
         $.ajax({
@@ -240,8 +227,6 @@ $('#ddd').click(() =>{
         if(markersArray){
             for(let i=0; i<markersArray.length; i++){
                 markersArray[i].remove();  // delete marks
-                // 热力图
-
             }
         }else{
             alert("请先生成点数据！")
@@ -258,7 +243,7 @@ $('#ddd').click(() =>{
                 if (!isSupportCanvas()) {
                     alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~')
                     }
-                heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20, "visible":true, "opacity":70});
+
                 map.addOverlay(heatmapOverlay);
                 heatmapOverlay.setDataSet({data: points, max:100});
                 heatmapOverlay.show();

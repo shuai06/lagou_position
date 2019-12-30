@@ -1,52 +1,13 @@
 $(document).ready(function(){
-    var pieChart1 = echarts.init(document.getElementById('divPlugin'));
-    var option1 = {
-        // title : {
-        //     text: '工作经验',
-        //     subtext: '纯属虚构',
-        //     x:'center'
-        // },
-        tooltip : {
-            trigger: 'item',
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        legend: {
-            orient: 'vertical',
-            left: 'left',
-            data: ['应届毕业生','不限','1年以下','1~3年','3~5年','哈哈哈   5~10年 ']
-        },
-        series : [
-            {
-                name: '经验',
-                type: 'pie',
-                radius : '55%',
-                center: ['50%', '60%'],
-                data:[
-                    {value:335, name:'应届毕业生'},
-                    {value:310, name:'不限'},
-                    {value:234, name:'1年以下'},
-                    {value:135, name:'1~3年'},
-                    {value:1548, name:'3~5年'},
-                    {value:548, name:'5~10年'}
-                ],
-                itemStyle: {
-                    emphasis: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
-                }
-            }
-        ]
-    };
-    pieChart1.setOption(option1);
+
+	//  .caseWordCloud   词云
 
     // 城市
 	var barCharts1 = echarts.init(document.getElementById('monthly'));
 	option3 = {
 		title : {
 			text: '城市分布',
-			subtext: '纯属虚构',
+			// subtext: '纯属虚构',
 			x:'center'
 		},
 		tooltip: {},
@@ -80,6 +41,9 @@ $(document).ready(function(){
 		legend: {
 			orient: 'vertical',
 			left: 'left',
+			textStyle:{
+				color: '#ffffff'//字体颜色
+				},
 			data: ['不限','大专','本科','硕士','博士']
 		},
 		series : [
@@ -107,6 +71,7 @@ $(document).ready(function(){
 	};
 	pieChart2.setOption(option2);
 
+
 	//
     var pieChart4 = echarts.init(document.getElementById('ckcharts'));
 	var option4 = {
@@ -121,8 +86,14 @@ $(document).ready(function(){
 		legend: {
 			orient: 'vertical',
 			left: 'left',
+			textStyle:{
+				color: '#ffffff'//字体颜色
+				},
 			data: ['不限','大专','本科','硕士','博士']
 		},
+
+
+
 		series : [
 			{
 				name: '经验',
@@ -163,6 +134,9 @@ $(document).ready(function(){
         legend: {
             orient: 'vertical',
             left: 'left',
+			textStyle:{
+				color: '#ffffff'//字体颜色
+				},
             data: ['应届毕业生','不限','1年以下','1~3年','3~5年','哈哈哈   5~10年 ']
         },
         series : [
@@ -196,7 +170,7 @@ $(document).ready(function(){
 	option6 = {
 		title : {
 			text: '城市分布',
-			subtext: '纯属虚构',
+			// subtext: '纯属虚构',
 			x:'center'
 		},
 		tooltip: {},

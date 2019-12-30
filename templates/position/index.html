@@ -1,106 +1,161 @@
-<!doctype html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>职位地图</title>
+{% extends 'base/base_top.html' %}
 
-    <link rel="shortcut icon " type="images/x-icon" href="../../static/images/ico.ico">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
-    <link href="http://api.map.baidu.com/library/IndoorMap/1.0/src/indoor.min.css?v=1.0.1 " rel="stylesheet" type="text/css">
-     <link rel="stylesheet" href="../../static/css/position.css">
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
-        <!-- 加载地图JSAPI脚本 -->
-    <script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=A413DT59OvGqxFLVIukjSFyfQoE327kz"></script>
-    <script type="text/javascript" src="//api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
-    <script type="text/javascript" src="//api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
-	<script type="text/javascript" src="//api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
+{% block title %}  主页 {% endblock %}
+
+{% block link %}
+    <link rel="stylesheet" href="../../static/css/position.css">
+ {% endblock %}
+
+
+
+
+{% block content %}
+        <!--Loading-->
+        <section class="Loading"></section>
+        <!--Loading-->
+
+        <div class="left_wrapper">
+            <form class="form-inline" style="position: relative; top: 50px; left: 5px;">
+              <div class="form-group">
+                <label for="zw_name">Search</label>
+                <input type="text" class="form-control" id="zw_name" placeholder="搜索...">
+              </div>
+            </form>
+
+            <button type="button" class="btn btn-success" id="bbb">爬取数据</button>
+            <button type="button" class="btn btn-info" id="ccc">展示数据</button>
+            <button type="button" class="btn btn-danger" id="ddd">渲染数据</button>
+
+        </div>
+
+        <div id="container">
+            <div id="container"></div>
+        </div>
+
+        <div id="container"></div>
+
+{% endblock %}
+
+{% block script %}
     <script src="../../static/js/position/position.js"></script>
+{% endblock %}
 
 
-    <style>
-    </style>
-</head>
-<body>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{#<!doctype html>#}
+{#<html>#}
+{#<head>#}
+{#    <meta charset="utf-8">#}
+{#    <meta http-equiv="X-UA-Compatible" content="IE=edge">#}
+{#    <title>职位地图</title>#}
+{##}
+{#    <link rel="shortcut icon " type="images/x-icon" href="../../static/images/ico.ico">#}
+{#    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">#}
+{#    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />#}
+{#    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">#}
+{#    <link href="http://api.map.baidu.com/library/IndoorMap/1.0/src/indoor.min.css?v=1.0.1 " rel="stylesheet" type="text/css">#}
+{#     <link rel="stylesheet" href="../../static/css/position.css">#}
+{#    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>#}
+{#        <!-- 加载地图JSAPI脚本 -->#}
+{#    <script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=A413DT59OvGqxFLVIukjSFyfQoE327kz"></script>#}
+{#    <script type="text/javascript" src="//api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>#}
+{#    <script type="text/javascript" src="//api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>#}
+{#	<script type="text/javascript" src="//api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>#}
+{#    <script src="../../static/js/position/position.js"></script>#}
+{##}
+{##}
+{#    <style>#}
+{#    </style>#}
+{#</head>#}
+{#<body>#}
+{##}
 {#头部#}
-<nav class="navbar navbar-default navbar-static-top" id="header">
-    <div class="container-fluid">
-
-        <div class="navbar-header">
-
-          <a class="navbar-brand" href="#">智慧职位展示系统</a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-8">
-
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-              <li class="active haha"><a href="#">职位首页</a></li>
-              <li class="haha"><a href="#">探索</a></li>
-              <li class="haha"><a href="{% url 'position:analyze' %}">统计分析</a></li>
-              <li class="haha"><a href="{% url 'position:other' %}">其他</a></li>
-            </ul>
-
-
-
-
-        </div>
-      </div>
-</nav>
-
-
+{#<nav class="navbar navbar-default navbar-static-top" id="header">#}
+{#    <div class="container-fluid">#}
+{##}
+{#        <div class="navbar-header">#}
+{##}
+{#          <a class="navbar-brand" href="#">智慧职位展示系统</a>#}
+{#        </div>#}
+{##}
+{#        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-8">#}
+{##}
+{#            <ul class="nav navbar-nav navbar-right">#}
+{#                <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>#}
+{#                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>#}
+{#            </ul>#}
+{##}
+{#            <ul class="nav navbar-nav navbar-right">#}
+{#              <li class="active haha"><a href="#">职位首页</a></li>#}
+{#              <li class="haha"><a href="#">探索</a></li>#}
+{#              <li class="haha"><a href="{% url 'position:analyze' %}">统计分析</a></li>#}
+{#              <li class="haha"><a href="{% url 'position:other' %}">其他</a></li>#}
+{#            </ul>#}
+{##}
+{##}
+{##}
+{##}
+{#        </div>#}
+{#      </div>#}
+{#</nav>#}
 
 
 
 
-<!--Loading-->
+
+
+{#<!--Loading-->#}
 {#<section class="Loading"></section>#}
-<!--Loading-->
-
-
-
-<div class="left_wrapper">
-
+{#<!--Loading-->#}
+{##}
+{#<div class="left_wrapper">#}
+{##}
 {#                  <form class="form-inline" style="display: block; margin-top: 60px;margin-left: 37px">#}
 {#                  <div class="form-group">#}
 {#                    <input type="text" class="form-control" id="zw_name" placeholder="搜索..." size="10">#}
 {#                  </div>#}
-
 {#               </form>#}
-    <form class="form-inline" style="position: relative; top: 40px; left: 5px;">
-      <div class="form-group">
-        <label for="zw_name">Search</label>
-        <input type="text" class="form-control" id="zw_name" placeholder="搜索...">
-      </div>
-    </form>
-
-
-    <button type="button" class="btn btn-success" id="bbb">爬取数据</button>
-    <button type="button" class="btn btn-info" id="ccc">展示数据</button>
-    <button type="button" class="btn btn-danger" id="ddd">渲染数据</button>
-
-
-</div>
-
-<div id="container">
+{#    <form class="form-inline" style="position: relative; top: 40px; left: 5px;">#}
+{#      <div class="form-group">#}
+{#        <label for="zw_name">Search</label>#}
+{#        <input type="text" class="form-control" id="zw_name" placeholder="搜索...">#}
+{#      </div>#}
+{#    </form>#}
+{##}
+{#    <button type="button" class="btn btn-success" id="bbb">爬取数据</button>#}
+{#    <button type="button" class="btn btn-info" id="ccc">展示数据</button>#}
+{#    <button type="button" class="btn btn-danger" id="ddd">渲染数据</button>#}
+{#    #}
+{#</div>#}
+{##}
+{#<div id="container">#}
 {#    <div id="container"></div>#}
-
-</div>
-
-
-
-
+{##}
+{#</div>#}
+{##}
 {#<div id="container"></div>#}
 
-
-
-
-</body>
-</html>
+{##}
+{##}
+{##}
+{#</body>#}
+{#</html>#}

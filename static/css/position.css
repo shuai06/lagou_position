@@ -9,7 +9,8 @@
     top:0;
     width:200px;
     height:949px;
-    background-color: rgb(6,64,102);
+    /*background-color: rgb(6,64,102);*/
+    background-color: rgb(0, 36, 85);
 }
 
 #container{
@@ -19,12 +20,12 @@
     /*background: #F0AD4E;*/
 }
 
-#header{
-    background-color: rgb(6,64,102);
-}
+/*#header{*/
+/*    background-color: rgb(6,64,102);*/
+/*}*/
 
 #bbb{
-    margin-top: 50px;
+    margin-top: 75px;
     margin-left: 50px;
   }
 
