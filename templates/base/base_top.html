@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Base{% endblock %}</title>
+    {% block link %}
+    {% endblock %}
+</head>
+
+
+<body>
+
+<!-- header start -->
+{% block header %}
+    <header id="header">
+  <div class="mw1200 header-contain clearfix">
+    <!-- logo start -->
+    <h1 class="logo">
+      <a href="javascript:void(0);" class="logo-title">Python</a>
+    </h1>
+    <!-- logo end -->
+    <!-- nav start -->
+    <nav class="nav">
+      <ul class="menu">
+        <li><a href="{% url 'news:index' %}">首页</a></li>
+        <li><a href="{% url 'course:index' %}">在线课堂</a></li>
+        <li><a href="{% url 'doc:index' %}">下载文档</a></li>
+        <li><a href="{% url 'news:search' %}">搜索</a></li>
+      </ul>
+    </nav>
+    <!-- nav end -->
+    <!-- login start -->
+    <div class="login-box">
+        {#  如果获取到登录用户的cookie#}
+        {% if user.is_authenticated %}
+            <div class="author">
+                <i class="PyWhich py-user"></i>
+                <span>{{ user.username }}</span>
+                <ul class="author-menu">
+{#                    必须是员工才能进后台管理系统#}
+                    {% if user.is_staff %}
+                        <li><a href="{% url 'admin:index' %}">后台管理</a></li>
+                    {% endif  %}
+                    <li><a href="{% url 'authPro:logout' %}">退出登录</a></li>
+                </ul>
+            </div>
+        {# 如果未登录#}
+        {% else %}
+            <div>
+                <i class="PyWhich py-user"></i>
+                <span>
+                    <a href="{% url 'authPro:login' %}" class="login">登录</a> /
+                    <a href="{% url 'authPro:register' %}" class="reg">注册</a>
+                </span>
+            </div>
+        {% endif %}
+
+    </div>
+    <!-- login end -->
+  </div>
+</header>
+<!-- header end -->
+{% endblock %}
+
+
+
+
+{#主体#}
+{% block content %}
+{% endblock %}
+
+
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+{#下面这个是基于jq的，所以要写在他的后面#}
+<script src="{% static 'js/base/setup.js' %}"></script>
+<script src="{% static 'js/base/message.js' %}"></script>
+
+<script src="{% static 'js/base/common.js' %}"></script>
+
+
+
+
+
+{% block script %}
+{% endblock %}
+
+
+
+
+</body>
+</html>

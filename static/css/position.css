@@ -1,0 +1,71 @@
+
+*{
+ /*background-color: rgb(6,64,102);*/
+}
+
+.left_wrapper{
+    position: absolute;
+    left: 0;
+    top:0;
+    width:200px;
+    height:949px;
+    background-color: rgb(6,64,102);
+}
+
+#container{
+    margin-left:200px;
+    height:900px;
+    margin-top: -20px;
+    /*background: #F0AD4E;*/
+}
+
+#header{
+    background-color: rgb(6,64,102);
+}
+
+#bbb{
+    margin-top: 50px;
+    margin-left: 50px;
+  }
+
+#ccc{
+    margin-top: 20px;
+    margin-left: 50px;
+  }
+
+#ddd{
+    margin-top: 20px;
+    margin-left: 50px;
+  }
+
+#eee{
+    margin-top: 20px;
+    margin-left: 50px;
+  }
+
+#fff{
+    margin-top: 20px;
+    margin-left: 50px;
+  }
+
+
+.Loading{
+    background:url("../images/loading_red.gif") 50% no-repeat #fff;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    position:fixed;
+    left:0;
+    top:0;
+    z-index:100;
+    display: none;
+}
+
+.bdimg{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+}
+
+
