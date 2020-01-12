@@ -6,15 +6,12 @@
     <link rel="shortcut icon " type="images/x-icon" href="../../static/images/ico.ico">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
-
-{#    <link rel="stylesheet" href="{% static 'css/base/bootstrap-3.3.7/bootstrap.css' %}" />#}
-{#    <link rel="stylesheet" href="{% static 'css/base/bootstrap-3.3.7/bootstrap-theme.css' %}" />#}
-{# <link rel="stylesheet" href="{% static 'css/base/bootstrap-3.3.7/bootstrap-theme.css.map' %}" />#}
     <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
-
     <link href="http://api.map.baidu.com/library/IndoorMap/1.0/src/indoor.min.css?v=1.0.1 " rel="stylesheet" type="text/css">
+
     <link rel="stylesheet" href="{% static 'css/base/base_top.css' %}">
     {% block link %}
+
     {% endblock %}
 </head>
 
@@ -23,39 +20,52 @@
 
 <!-- header start -->
 {% block header %}
-{#    <header id="header">#}
-        <nav class="navbar navbar-default navbar-static-top" id="header">
-            <div class="container-fluid">
+<header id="header">
 
-                <div class="navbar-header">
+    <nav class="navbar navbar-default navbar-fixed-top" id="nav-top">
 
-                  <a class="navbar-brand" href="#">智慧职位展示系统</a>
-                </div>
+        <div class="container-fluid">
+{#            logo#}
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">智慧职位展示系统</a>
+            </div>
+{#            导航#}
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-8">
+                <ul class="nav navbar-nav">
+                  <li class="haha"><a href="{% url 'position:index' %}">职位首页</a></li>
+                  <li class="haha"><a href="#">探索</a></li>
+                  <li class="haha"><a href="{% url 'position:analyze' %}">统计分析</a></li>
+                  <li class="haha"><a href="{% url 'position:other' %}">其他</a></li>
+                </ul>
 
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-8">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">我的资料</a></li>
+                                <li><a href="#">账户管理</a></li>
+                                <li><a href="#">...</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{% url 'authPro:logout' %}">退出登录</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'authPro:register' %}"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                        <li><a href="{% url 'authPro:login' %}"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                    {% endif %}
+                </ul>
 
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
-                    </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                      <li class="active haha"><a href="#">职位首页</a></li>
-                      <li class="haha"><a href="#">探索</a></li>
-                      <li class="haha"><a href="{% url 'position:analyze' %}">统计分析</a></li>
-                      <li class="haha"><a href="{% url 'position:other' %}">其他</a></li>
-                    </ul>
+            </div>
+          </div>
+    </nav>
 
 
-
-
-                </div>
-              </div>
-        </nav>
     <!-- nav end -->
+
     <!-- login start -->
 {#    <div class="login-box">#}
-        {#  如果获取到登录用户的cookie#}
+{#          如果获取到登录用户的cookie#}
 {#        {% if user.is_authenticated %}#}
 {#            <div class="author">#}
 {#                <i class="PyWhich py-user"></i>#}
@@ -64,7 +74,7 @@
 {#                    <li><a href="{% url 'authPro:logout' %}">退出登录</a></li>#}
 {#                </ul>#}
 {#            </div>#}
-        {# 如果未登录#}
+{#         如果未登录#}
 {#        {% else %}#}
 {#            <div>#}
 {#                <i class="PyWhich py-user"></i>#}
@@ -79,7 +89,7 @@
 {#    <!-- login end -->#}
 {#  </div>#}
 
-{#</header>#}
+</header>
 <!-- header end -->
 {% endblock %}
 
@@ -104,6 +114,7 @@
 <script type="text/javascript" src="//api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
 <script type="text/javascript" src="//api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
 <script type="text/javascript" src="//api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
+<script type="text/javascript" src="http://developer.baidu.com/map/custom/stylelist.js"></script>
 <script src="https://cdn.bootcss.com/echarts/4.3.0/echarts.js"></script>
 
 {% block script %}

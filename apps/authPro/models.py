@@ -6,8 +6,6 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 class UserManager(BaseUserManager):
     """
     用来创建用户：
-        超级管理员
-        普通用户
         用户是通过手机号注册的
     """
     def _create_user(self, telephone, username, password):
@@ -29,7 +27,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     telephone = models.CharField(max_length=11, unique=True)
     username = models.CharField(max_length=30)
-    email = models.EmailField(unique=True, null=True)
+    # email = models.EmailField(unique=True, null=True)
     join_date = models.DateTimeField(auto_now_add=True)
     # 0 保密  1 女  2 男
     gender = models.IntegerField(default=0)

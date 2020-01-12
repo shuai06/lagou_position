@@ -3,6 +3,10 @@
  /*background-color: rgb(6,64,102);*/
 }
 
+body{
+    overflow:hidden;
+}
+
 .left_wrapper{
     position: absolute;
     left: 0;
@@ -51,7 +55,7 @@
 
 
 .Loading{
-    background:url("../images/loading_red.gif") 50% no-repeat #fff;
+    /*background:url("../images/loading_red.gif") 50% no-repeat #fff;*/
     width:100%;
     height:100%;
     overflow:hidden;

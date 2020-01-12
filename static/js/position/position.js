@@ -196,7 +196,7 @@ $("#bbb").click(function (){
             }
         }
        alertWin();
-        // $(".Loading").show();
+        $(".Loading").show();
 
         $.ajax({
             url: "search/",

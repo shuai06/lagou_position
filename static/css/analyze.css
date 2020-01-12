@@ -226,22 +226,22 @@ html,body{
     margin-left: -105px;
 }
 .showMain .monthCaseChart:before{
-    content:"地区统计";
+    content:"城市统计";
     width: 210px;
     margin-left: -105px;
 }
 .showMain .admRegMonthCase:before{
-    content:"学历统计";
+    /*content:"学历统计";*/
     width: 240px;
     margin-left: -120px;
 }
 .showMain .monitorShowInfo:before{
-    content:"统计统计";
+    content:"经验统计";
     width: 180px;
     margin-left: -90px;
 }
 .showMain .weekCaseRate:before{
-    content:"统计";
+    /*content:"统计";*/
     width: 240px;
     margin-left: -120px;
 }

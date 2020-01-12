@@ -23,7 +23,7 @@ class Position(models.Model):
     city = models.CharField(max_length=100)
     lat = models.CharField(max_length=100)
     lon = models.CharField(max_length=100)
-    city_count = models.CharField(max_length=100, null=True)   # 城市数量
+    city_count = models.IntegerField(null=True)   # 城市数量
 
     def __str__(self):
         return str(("{},{},{},{},{},{}".format(self.name, self.money, self.zwtype, self.city, self.lat, self.lon)))

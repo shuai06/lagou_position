@@ -10,7 +10,7 @@ from .models import User
 class LoginForm(forms.Form, FormMixin):
     # 自定义验证器  1[3-9][0-9]\d{8}
     telephone = forms.CharField(validators=[validators.RegexValidator(r'1[3-9][0-9]\d{8}', message='手机格式有误')], error_messages={"required": "手机号码不能为空"})
-    password = forms.CharField(min_length=6, max_length=20, error_messages={"required": "密码框不能为空", "min_length": "长度不能低于6位", "max_length": "长度不能大于20位"})
+    password = forms.CharField(min_length=6, max_length=20, error_messages={"required": "密码框不能为空", "min_length": "密码长度不能低于6位", "max_length": "密码长度不能大于20位"})
     # 记住我 如果前端勾选 =》True   这里选择 False  选True表示一定要勾上
     remember = forms.BooleanField(required=False)
     # url = forms.CharField(validators=[validators.RegexValidator(),validators.URLValidator])
@@ -21,15 +21,14 @@ class RegisterForm(forms.Form, FormMixin):
     telephone = forms.CharField(validators=[validators.RegexValidator(r'1[3-9][0-9]\d{8}', message='手机格式有误')],
                                 error_messages={"required": "手机号码不能为空"})
     password = forms.CharField(min_length=6, max_length=20,
-                               error_messages={"required": "密码框不能为空", "min_length": "长度不能低于6位",
-                                               "max_length": "长度不能大20位"})
+                               error_messages={"required": "密码框不能为空", "min_length": "密码长度不能低于6位",
+                                               "max_length": "密码长度不能大20位"})
     username = forms.CharField(max_length=20, min_length=1,
                                error_messages={"required": "用户名不能为空"})
-    sms_captcha = forms.CharField(max_length=4, min_length=4,
-                                  error_messages={"required": "短信验证码不能为空"})
+
     password_repeat = forms.CharField(min_length=6, max_length=20,
-                               error_messages={"required": "密码框不能为空", "min_length": "长度不能低于6位",
-                                               "max_length": "长度不能大于20位"})
+                               error_messages={"required": "密码框不能为空", "min_length": "密码长度不能低于6位",
+                                               "max_length": "密码长度不能大于20位"})
     graph_captcha = forms.CharField(max_length=4, min_length=4,
                                     error_messages={"required": "图形验证码不能为空"})
 

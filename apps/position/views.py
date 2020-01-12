@@ -1,5 +1,13 @@
+import json
 import time
 
+import jieba
+from wordcloud import WordCloud
+import PIL.Image as image
+import numpy as np
+
+from lagou_position.settings import MEDIA_ROOT  as media_path
+from lagou_position.settings import STATICFILES_DIRS as static_path
 from django.shortcuts import render,reverse,redirect
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
@@ -12,6 +20,9 @@ from django.core import serializers
 from .models import Position
 from .pa import PaPosition
 
+from django.db import connection
+
+
 
 # 首页
 # @csrf_protect
@@ -19,7 +30,9 @@ def index(request):
     return render(request, 'position/index.html')
 
 
+
 # @csrf_protect
+# @login_required()
 # 获取点位置
 def get_pos(request):
     if request.method == 'POST':
@@ -32,6 +45,7 @@ def get_pos(request):
         pass
 
 
+# @login_required()
 # 点击爬取职位信息
 def search(request):
     if request.method == "POST":
@@ -83,11 +97,16 @@ def search(request):
         return JsonResponse(jsonData)
 
 
+
+# @csrf_protect
+# @login_required()
 # 图表展示职位分析
 def analyze(request):
     return render(request, 'position/analyze.html')
 
-# 统计城市职位数量
+
+# 统计城市职位数量  （热力图用的）
+# @login_required()
 def count_city(request):
     if request.method == "POST":
         successData = {
@@ -110,7 +129,7 @@ def count_city(request):
             all_data = Position.objects.all()
             print(all_data)
             for j in all_data:
-                print(j.city)
+                # print(j.city)
                 if j.city in city_dict.keys():  # 判断sql查出来的city, 是否在字典的key中
                     # 查出数据,update他的count的值为对应字典键值对的value
                     # 如果在，就更新数据
@@ -127,5 +146,50 @@ def count_city(request):
 # 测试
 def other(request):
     return render(request, 'position/other.html')
+
+
+# 词云
+def gen_WordCloud(request):
+    with open("../../static/test.txt") as fp:
+        text = fp.read()
+        # print(text)
+        # 将读取的中文文档进行分词
+        text = trans_CN(text)
+        mask = np.array(image.open(static_path + "/images/position/love.jpg"))
+        wordcloud = WordCloud(
+            # 添加遮罩层
+            mask=mask,
+            # 生成中文字的字体,必须要加,不然看不到中文
+            # font_path="C:\Windows\Fonts\STXINGKA.TTF"
+        ).generate(text)
+        image_produce = wordcloud.to_image()
+        # image_produce.show()
+        rand = str(time.strftime("%Y-%m-%d-%H%M%S", time.localtime(time.time())))
+        filename = media_path + "/" + rand + ".png"
+        image_produce.save(filename)
+        image_data = open(filename, "rb").read()
+        return HttpResponse(image_data, content_type="image/png")
+
+
+# 分词
+def trans_CN(text):
+    # 接收分词的字符串
+    word_list = jieba.cut(text)
+    # 分词后在单独个体之间加上空格
+    result = " ".join(word_list)
+    return result
+
+
+# 统计图 char city
+def charCity(request):
+    if request.method == "POST":
+        qResult = Position.objects.values("city", "city_count").distinct().order_by('-city_count')[0:12]  # 从大到小排序
+        cityList = list(qResult)   # 直接把QuerySet转为List
+        print(cityList)
+
+        return HttpResponse(json.dumps({'data': cityList}), content_type="application/json")
+
+
+
 
 

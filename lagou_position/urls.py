@@ -21,8 +21,7 @@ from django.conf.urls.static import static
 # 要放在/ 路由  要么你就在把URL 定义成 /admin/media/
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
     path('', include('apps.position.urls')),
     # path('position/', include('apps.position.urls')),
-    path('auth', include('apps.authPro.urls')),
-] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    path('auth/', include('apps.authPro.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

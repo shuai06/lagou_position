@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import check_password
 from django.shortcuts import render, redirect, reverse
 from django.views import View
 from django.http import HttpResponse, JsonResponse
@@ -18,25 +19,28 @@ class LoginView(View):
         return render(request, 'authPro/login.html')
 
     # 相当于 if request.method == 'POST'
-    def post(self,request):
+    def post(self, request):
         # form 实例化  =》 self === form
         form = LoginForm(request.POST)
         if form.is_valid():
             telephone = form.cleaned_data['telephone']
             password = form.cleaned_data['password']
             remember = form.cleaned_data['remember']
-            # print(remember)
-            user = authenticate(username=telephone, password=password)
-            if user:
+            # user = authenticate(username=telephone, password=password)  # 此种方法有bug
+            user = User.objects.get(telephone=telephone)
+            pwd = user.password
+            if check_password(password, pwd):
                 next_url = request.GET.get("next")
                 if next_url:
                     return redirect(next_url)
-                login(request,user)
+                login(request, user)
                 if remember:
                     # None表示14天 单位是秒
                     request.session.set_expiry(None)
                 return restful.ok()
+
             return restful.params_error(message='用户名或密码错误')
+
         return restful.params_error(message=form.get_error())
 
 

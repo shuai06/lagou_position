@@ -6,7 +6,7 @@ let $loginBtn = $('.login-btn');
 // 获取输入框与密码框的值
 let $telIpt = $("input[name=telephone]");
 let $pwdIpt = $("input[name=password]");
-let $smsBtn = $(".sms-captcha");
+
 let $remember = $("input[name=remember]");
 let $graphBtn = $(".captcha-graph-img");
 let $registerBtn = $(".register-btn");
@@ -93,51 +93,6 @@ $loginBtn.click(function (ev) {
 
 
 
-//发送短信验证码
-$smsBtn.click(function () {
-    //获取手机号
-    let telVal = $telIpt.val();
-    console.log(telVal);  //第一次
-    // 如果按钮禁用，就不能点击
-    let sStatus = $(this)[0].hasAttribute("disabled");
-    if (sStatus){
-        return false;
-    }
-    if (telVal && telVal.trim()){
-        $.get({
-        url:"/auth/send-sms-captcha/",
-        "data":{
-            "telephone":telVal,
-        },
-        success: res => {
-            if (res['code'] === 0){
-                $(this).attr('disabled',true);
-                // 获取原本的值   每循环一次，就要获取一次
-                let txt = $(this).text();
-                let count = 10;
-                let timer = setInterval(()=>{
-                    $(this).text(count);
-                    count --;
-                    if (count<0){
-                        clearInterval(timer);
-                        $(this).text(txt);
-                        $(this).removeAttr("disabled");
-                    }
-                }, 1000)
-            }
-            console.log(res);
-        },
-        error: err => {
-            console.log(err);
-            console.log(err.status + "===" + err.statusText);
-        }
-    })
-    }else {
-        window.message.showInfo("手机号不能为空");
-    }
-});
-
-
 
 
 // 刷新图形验证码
@@ -149,6 +104,8 @@ $graphBtn.click(function () {
   let newSrc = oldSrc.split("?")[0] + '?_=' + Date.now();
   $img.attr("src", newSrc);
 });
+
+
 
 
 //注册按钮的点击事件
@@ -165,23 +122,20 @@ $registerBtn.click(function (ev) {
             "password":$pwdIpt.val(),
             "username":$("input[name=username]").val(),
             "password_repeat":$("input[name=password_repeat]").val(),
-            "sms_captcha":$("input[name=sms_captcha]").val(),
             "graph_captcha":$("input[name=captcha_graph]").val(),
         },
         success: res => {
             // {code:0,message:'',data:null}不管这个是多少，都会跑到success里面来
             // console.log(res);
             if (res['code']===0){
-                window.message.showSuccess("登录成功");
+                window.message.showSuccess("注册成功");
             }else {
                 window.message.showError(res['msg']);
                 setTimeout(() => {
-                    window.location.href = "/";
                 }, 2000);
             }
+            window.location.href = "/";
         },
-        // 是有js提供的
-        // 只有Ajax本身出了问题，才会跳到这里来   404=》前端url的错误    500=》服务器内部错误
         error: err => {
             console.log(err);
             // 状态码 + ，描述文本
