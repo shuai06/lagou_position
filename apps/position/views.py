@@ -150,34 +150,36 @@ def other(request):
 
 # 词云
 def gen_WordCloud(request):
-    with open("../../static/test.txt") as fp:
-        text = fp.read()
-        # print(text)
-        # 将读取的中文文档进行分词
-        text = trans_CN(text)
-        mask = np.array(image.open(static_path + "/images/position/love.jpg"))
-        wordcloud = WordCloud(
-            # 添加遮罩层
-            mask=mask,
-            # 生成中文字的字体,必须要加,不然看不到中文
-            # font_path="C:\Windows\Fonts\STXINGKA.TTF"
-        ).generate(text)
-        image_produce = wordcloud.to_image()
-        # image_produce.show()
-        rand = str(time.strftime("%Y-%m-%d-%H%M%S", time.localtime(time.time())))
-        filename = media_path + "/" + rand + ".png"
-        image_produce.save(filename)
-        image_data = open(filename, "rb").read()
-        return HttpResponse(image_data, content_type="image/png")
+    # with open("../../static/test.txt") as fp:
+    #     text = fp.read()
+    #     # print(text)
+    #     # 将读取的中文文档进行分词
+    #     text = trans_CN(text)
+    #     mask = np.array(image.open(static_path + "/images/position/love.jpg"))
+    #     wordcloud = WordCloud(
+    #         # 添加遮罩层
+    #         mask=mask,
+    #         # 生成中文字的字体,必须要加,不然看不到中文
+    #         # font_path="C:\Windows\Fonts\STXINGKA.TTF"
+    #     ).generate(text)
+    #     image_produce = wordcloud.to_image()
+    #     # image_produce.show()
+    #     rand = str(time.strftime("%Y-%m-%d-%H%M%S", time.localtime(time.time())))
+    #     filename = media_path + "/" + rand + ".png"
+    #     image_produce.save(filename)
+    #     image_data = open(filename, "rb").read()
+    #     return HttpResponse(image_data, content_type="image/png")
+    pass
 
 
 # 分词
 def trans_CN(text):
-    # 接收分词的字符串
-    word_list = jieba.cut(text)
-    # 分词后在单独个体之间加上空格
-    result = " ".join(word_list)
-    return result
+    # # 接收分词的字符串
+    # word_list = jieba.cut(text)
+    # # 分词后在单独个体之间加上空格
+    # result = " ".join(word_list)
+    # return result
+    pass
 
 
 # 统计图 char city
@@ -185,11 +187,33 @@ def charCity(request):
     if request.method == "POST":
         qResult = Position.objects.values("city", "city_count").distinct().order_by('-city_count')[0:12]  # 从大到小排序
         cityList = list(qResult)   # 直接把QuerySet转为List
-        print(cityList)
+        # print(cityList)
 
         return HttpResponse(json.dumps({'data': cityList}), content_type="application/json")
 
 
+# 统计图  char 学历
+# select xueli,count(*) from position_position group by xueli;
+def charXueli(request):
+    if request.method == "POST":
+        cursor = connection.cursor()
+        cursor.execute("select xueli,count(*) as x_count from position_position group by xueli")
+        x_dict = dict(list(cursor.fetchall()))
+        print(x_dict)
+
+        # print(qResult)
+        return HttpResponse(json.dumps({'data': x_dict}), content_type="application/json")
 
 
+# 统计图  char 工作经验
+# select xueli,count(*) from position_position group by xueli;
+def charWorkJy(request):
+    if request.method == "POST":
+        cursor = connection.cursor()
+        cursor.execute("select gzjy, count(*) as j_count from position_position group by gzjy;")
+        j_dict = dict(list(cursor.fetchall()))
+        print(j_dict)
+
+        # print(qResult)
+        return HttpResponse(json.dumps({'data': j_dict}), content_type="application/json")
 

@@ -1,25 +1,8 @@
 $(document).ready(function(){
 
-	 // .caseWordCloud   词云
-	        $.ajax({
-            url: "/gen_WordCloud/",
-            type:"POST",
-           success: (data) => {d
-               // console.log(data);
-               console.log("success!!!");
-                        var obj = document.getElementById("wordImg");
-                        obj.src = "data:image/jpeg;base64," + callback;
-
-           },
-           error: () => {
-               console.log("词云 Error");
-           }
-
-    });
-
-	// 学历要求
+	// 学历要求 char
     var pieChartXueli = echarts.init(document.getElementById('xueli'));
-	var option2Xueli = {
+	var optionXueli = {
 		title : {
 			text: '学历情况',
 			x:'center'
@@ -38,16 +21,16 @@ $(document).ready(function(){
 		},
 		series : [
 			{
-				name: '经验',
+				name: '学历',
 				type: 'pie',
 				radius : '55%',
 				center: ['50%', '60%'],
 				data:[
-					{value:800, name:'不限'},
-					{value:310, name:'大专'},
-					{value:1548, name:'本科'},
-					{value:300, name:'硕士'},
-					{value:50, name:'博士'},
+					// {value:800, name:'不限'},
+					// {value:310, name:'大专'},
+					// {value:1548, name:'本科'},
+					// {value:300, name:'硕士'},
+					// {value:50, name:'博士'},
 				],
 				itemStyle: {
 					emphasis: {
@@ -59,13 +42,70 @@ $(document).ready(function(){
 			}
 		]
 	};
-	pieChartXueli.setOption(option2Xueli);
+	pieChartXueli.setOption(optionXueli);
+
+	getChartXueli();
+	function getChartXueli(){
+		pieChartXueli.showLoading();
+		$.ajax({
+			url:'/charXueli/',
+			type:'POST',
+			success:function (data) {
+				pieChartXueli.hideLoading();  //加载数据完成后的loading动画
+				var dataStage = data.data;   //这里是我们后台返给我的数据
+				if(dataStage['博士'] == undefined){
+					dataStage['博士'] =0;
+				}
+				if(dataStage['硕士'] == undefined){
+					dataStage['硕士'] =0;
+				}
+				if(dataStage['本科'] == undefined){
+					dataStage['本科'] =0;
+				}
+				if(dataStage['大专'] == undefined){
+					dataStage['大专'] =0;
+				}
+				if(dataStage['不限'] == undefined){
+					dataStage['不限'] =0;
+				}
+				// 填充数据
+				pieChartXueli.setOption({
+					            series : [
+								{
+									name: '学历',
+									type: 'pie',
+									radius : '55%',
+									center: ['50%', '60%'],
+									data:[
+										{value:dataStage['不限'], name:'不限'},
+										{value:dataStage['大专'], name:'大专'},
+										{value:dataStage['本科'], name:'本科'},
+										{value:dataStage['硕士'], name:'硕士'},
+										{value:dataStage['博士'], name:'博士'},
+									],
+									itemStyle: {
+										emphasis: {
+											shadowBlur: 10,
+											shadowOffsetX: 0,
+											shadowColor: 'rgba(0, 0, 0, 0.5)'
+										}
+									}
+								}
+							],
+
+				});
+
+				// console.log("获取char city success");
+			},
+			error:function () {
+				console.log("获取char city 失败！");
+			}
+		})
+	}
 
 
 
-
-
-    // 城市
+    // 城市 char
 	var barChartsCity = echarts.init(document.getElementById('city'));
 	optionCity = {
 		tooltip: {},
@@ -77,11 +117,12 @@ $(document).ready(function(){
 				textStyle: {
 					color: '#fff'
 				          },
+				// rotate:30,
 				interval: 0,
-			   formatter:function(value)
-			   {
-				   return value.split("").join("\n");
-			   },
+			   // formatter:function(value)
+			   // {
+				//    return value.split("").join("\n");
+			   // },
 			},
 
 			data: [],  //ajax
@@ -132,11 +173,12 @@ $(document).ready(function(){
 									textStyle: {
 										color: '#fff'
 											  },
+									// rotate:30,
 									interval: 0,
-								    formatter:function(value)
-								    {
-									   return value.split("").join("\n");
-								    },
+								    // formatter:function(value)
+								    // {
+									//    return value.split("").join("\n");
+								    // },
 											},
 								data: city_list,  //ajax
 								},
@@ -156,9 +198,7 @@ $(document).ready(function(){
 	}
 
 
-
-
-	// 工作经验
+	// 工作经验  char
     var pieChartJy = echarts.init(document.getElementById('jingyan'));
     var optionJy = {
         // title : {
@@ -176,7 +216,7 @@ $(document).ready(function(){
 			textStyle:{
 				color: '#ffffff'//字体颜色
 				},
-            data: ['应届毕业生','不限','1年以下','1~3年','3~5年','哈哈哈   5~10年 ']
+            data: ['应届毕业生','不限','1年以下','1~3年','3~5年','5~10年']
         },
         series : [
             {
@@ -184,14 +224,14 @@ $(document).ready(function(){
                 type: 'pie',
                 radius : '55%',
                 center: ['50%', '60%'],
-                data:[
-                    {value:335, name:'应届毕业生'},
-                    {value:310, name:'不限'},
-                    {value:234, name:'1年以下'},
-                    {value:135, name:'1~3年'},
-                    {value:1548, name:'3~5年'},
-                    {value:548, name:'5~10年'}
-                ],
+                // data:[
+                //     {value:335, name:'应届毕业生'},
+                //     {value:310, name:'不限'},
+                //     {value:234, name:'1年以下'},
+                //     {value:135, name:'1~3年'},
+                //     {value:1548, name:'3~5年'},
+                //     {value:548, name:'5~10年'}
+                // ],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -203,6 +243,73 @@ $(document).ready(function(){
         ]
     };
     pieChartJy.setOption(optionJy);
+
+    getChartWorkJy();
+    function getChartWorkJy(){
+		pieChartJy.showLoading();
+		$.ajax({
+			url:'/charWorkJy/',
+			type:'POST',
+			success:function (data) {
+				pieChartJy.hideLoading();  //加载数据完成后的loading动画
+				var dataStage = data.data;   //这里是我们后台返给我的数据
+				if(dataStage['应届毕业生'] == undefined){
+					dataStage['应届毕业生'] =0;
+				}
+				if(dataStage['不限'] == undefined){
+					dataStage['不限'] =0;
+				}
+				if(dataStage['1年以下'] == undefined){
+					dataStage['1年以下'] =0;
+				}
+				if(dataStage['1-3年'] == undefined){
+					dataStage['1-3年'] =0;
+				}
+				if(dataStage['3-5年'] == undefined){
+					dataStage['3-5年'] =0;
+				}
+				if(dataStage['5-10年'] == undefined){
+					dataStage['5-10年'] =0;
+				}
+				if(dataStage['10年以上'] == undefined){
+					dataStage['10年以上'] =0;
+				}
+				// 填充数据
+				pieChartJy.setOption({
+							series : [
+							{
+								name: '经验',
+								type: 'pie',
+								radius : '55%',
+								center: ['50%', '60%'],
+								data:[
+									{value:dataStage['应届毕业生'], name:'应届毕业生'},
+									{value:dataStage['不限'], name:'不限'},
+									{value:dataStage['1年以下'], name:'1年以下'},
+									{value:dataStage['1-3年'], name:'1~3年'},
+									{value:dataStage['3-5年'], name:'3~5年'},
+									{value:dataStage['5-10年'], name:'5~10年'},
+									{value:dataStage['10年以上'], name:'10年以上'},
+								],
+								itemStyle: {
+									emphasis: {
+										shadowBlur: 10,
+										shadowOffsetX: 0,
+										shadowColor: 'rgba(0, 0, 0, 0.5)'
+									}
+								}
+							}
+						]
+
+				});
+
+				// console.log("获取char city success");
+			},
+			error:function () {
+				console.log("获取char city 失败！");
+			}
+		})
+	}
 
 
 
@@ -217,11 +324,10 @@ window.onresize = function(){
 
 
 // 中间地图
-
 var map = new BMap.Map("mapholder");
-var point = new BMap.Point(116.404, 39.915);
-map.centerAndZoom(point, 10);
-map.enableScrollWheelZoom(true);
+var point = new BMap.Point(108.000, 39.915);
+map.centerAndZoom(point, 5);
+// map.enableScrollWheelZoom(true);
 map.enableInertialDragging();
 map.enableContinuousZoom();
 
@@ -235,6 +341,18 @@ function changeMapStyle(style){
 	};
 	map.setMapStyle(mapStyle);
 }
+
+
+// js2wordcloud 生成词云
+var wc = new Js2WordCloud(document.getElementById('wordImg'));
+wc.setOption({
+    tooltip: {
+        show: true
+    },
+    list: [['谈笑风生', 8], ['弹性工作', 8], ['六险一金', 7], ['双休', 7], ['年薪百万', 6], ['大牛带飞', 6],['免费水果',10], ['下午茶',5],['免费体检',6],['无限调休',6]],
+    color: '#15a4fa',
+	  "backgroundColor": '#082054', // the color of canvas
+})
 
 
 });
