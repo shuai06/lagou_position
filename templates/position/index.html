@@ -22,15 +22,61 @@
               </div>
             </form>
 
-            <button type="button" class="btn btn-success" id="bbb">爬取数据</button>
-            <button type="button" class="btn btn-info" id="ccc">展示数据</button>
-            <button type="button" class="btn btn-danger" id="ddd">渲染数据</button>
+            <button type="button" class="btn btn-success" id="btnPa">爬取数据</button>
+            <button type="button" class="btn btn-info" id="btnDis">展示数据</button>
+            <button type="button" class="btn btn-danger" id="btnXuan">渲染数据</button>
 
         </div>
 
-        <div id="container">
+
+{#            百度地图容器#}
             <div id="container"></div>
-        </div>
+
+        {#<!--  职位列表开始 -->#}
+            <div class="showCase1 showCase">
+                <div class="showCaseInfoMini text-center">
+                    <i class="fa fa-2x fa-chevron-down" title="展开/隐藏"></i>
+                </div>
+                <div class="showCaseInfo container" style="">
+
+                    <div class="showCaseInfoMain">
+
+                        <div class="row">
+                         <div class="col-md-12 caseList" >
+{#                               暂时先不管这个搜索框  和上面的i的箭头#}
+{#                             <form class="form-inline">#}
+{#                                <div class="form-group">#}
+{#                                 <input type="text" class="form-control input-small" id="zw_search" placeholder="搜索...">#}
+{#                                </div>#}
+{#                            </form>#}
+                             <img src="{% static 'images/position/fold.png' %}" alt="图片未找到!" title="展开" id="upAndD">
+                             <span style="display:inline-block; float:right; cursor:pointer" id="closeList">X</span>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12" style="padding-right: 0px;">
+                                <table id = "theadAndTbody" class="table">
+                                    <thead>  <tr><th>职位</th><th>公司</th><th>城市</th><th>薪资</th><th>学历</th><th>经验</th> <th>详情</th></tr>
+                                     </thead>
+                                    <tbody>
+                                        <tr> <td></td> <td></td><td></td><td>查询数据为空!</td>  <td></td> <td></td> <td></td> </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        {#<!--  职位列表结束 -->#}
+
+
+
+
+
+
 
 {% endblock %}
 

@@ -28,30 +28,30 @@ body{
 /*    background-color: rgb(6,64,102);*/
 /*}*/
 
-#bbb{
+#btnPa{
     margin-top: 75px;
     margin-left: 50px;
   }
 
-#ccc{
+#btnDis{
     margin-top: 20px;
     margin-left: 50px;
   }
 
-#ddd{
+#btnXuan{
     margin-top: 20px;
     margin-left: 50px;
   }
 
-#eee{
-    margin-top: 20px;
-    margin-left: 50px;
-  }
+/*#eee{*/
+/*    margin-top: 20px;*/
+/*    margin-left: 50px;*/
+/*  }*/
 
-#fff{
-    margin-top: 20px;
-    margin-left: 50px;
-  }
+/*#fff{*/
+/*    margin-top: 20px;*/
+/*    margin-left: 50px;*/
+/*  }*/
 
 
 .Loading{
@@ -72,5 +72,249 @@ body{
     top: 50%;
 
 }
+
+
+
+
+
+
+/*职位信息列表*/
+
+.showCaseInfoMini{
+    width: 100%;
+}
+.showCaseInfoMini i{
+    background-color: #f4f4f4;
+    padding: 1px 20px;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+}
+
+.showCase{
+    position: absolute;
+    /*left: 25.2%;*/
+    margin-left: 200px;
+     bottom: 0px;
+    width: 89.5%;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.showCaseInfo{
+    width: 100%;
+    /*height: 0;*/
+    max-width: inherit !important;
+    overflow: hidden;
+    background-image: -webkit-radial-gradient(800px 800px at 400px 150px, rgb(2,22,84),rgb(11,74,156));
+  	background-image: radial-gradient(800px 800px at 400px 150px, rgb(2,22,84),rgb(11,74,156));
+
+
+}
+
+#upAndD{
+	cursor:pointer;
+	position: absolute;
+    right: 50px;
+    top: 10px;
+}
+
+
+
+.showCaseInfoMain{
+    height: 330px;
+    margin-top: 74px;
+    overflow: auto;
+    height: calc(100% - 72px);
+}
+.showCaseInfo .row{
+    margin-left: 0;
+    margin-right: 0;
+}
+
+
+
+
+.showCaseInfo .row:nth-child(1) {
+    position: absolute;
+    left: 0;
+    top: 0px;
+    z-index: 99;
+    background-color: #f4f4f4;
+    width: 100%;
+    padding: 15px 0;
+    margin-top: 0;
+    border-bottom: 1px solid #ddd;
+    height: 56px;
+}
+
+
+.showMore{
+    cursor: pointer;
+}
+
+.showMore:nth-child(2){
+	position: absolute;
+    right: 100px;
+}
+.showMore img{
+    transition: 0.5s;
+}
+
+
+
+.showCaseInfo .row .createCase{
+    width: 150px;
+    background-color: #4681f4;
+    margin-left: 15px;
+}
+.showCaseInfo .row .search{
+    margin-bottom: 0;
+}
+.showCaseInfo .col-md-2{
+    width: 16.66666667%;
+    float: left;
+    width: 180px;
+}
+.showCaseInfo .row .col-md-3{
+    width: 16.66666667%;
+    float: left;
+    padding-left: 0;
+}
+.showCaseInfo .row .col-md-4{
+    left:547px;
+    width: 44.33333333%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.showCaseInfo .row .status{
+    height: 36px;
+    line-height: 36px;
+    font-size: 16px;
+    padding: 0 5px;
+    cursor: pointer;
+}
+
+.showCaseInfos{
+    width: 100%;
+    height: 300px;
+    max-width: inherit !important;
+    background-color: #f4f4f4;
+    box-shadow: 0 5px 10px #d5d5d5;
+    z-index: 99;
+    overflow: hidden;
+}
+.showCaseInfos .row{
+    margin-top:15px;
+    margin-left: 0;
+}
+.showCaseInfos .row:nth-child(1){
+	height: 73px;
+}
+.showCaseInfo .row .status span{
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-color: #fedf0e;
+    vertical-align: text-top;
+}
+.showCaseInfo .row .status:nth-child(2) span{
+    background-color: #fe504d;
+}
+.showCaseInfo .row .status:nth-child(3) span{
+    background-color: #4681f4;
+}
+.showCaseInfo .row .status:nth-child(4) span{
+    background-color: #435075;
+}
+.showCaseInfo .row .status b{
+    font-weight: 500;
+}
+
+.table thead tr{
+    height: 47px;
+    color:#fff;
+}
+.table thead tr th{
+    text-align: center;
+    line-height: 47px;
+    padding: 0 8px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.table tbody tr{
+    height: 45px;
+}
+.table tbody tr td{
+/*     color: #333333; */
+    text-align: center;
+    line-height: 45px;
+    padding: 0 8px;
+    font-size: 16px;
+    color: #cecece;
+    font-weight: bold;
+    border:0;
+}
+.table tbody tr:nth-child(even){
+/*     background-color: #141367; */
+    background-color: rgb(11,74,156)
+}
+.table tbody tr td:last-child{
+    color: #7ea2f6;
+
+}
+#xxx{
+	background-color:rgb(4,92,97);
+}
+
+.detail_title_name {
+    height: 45px;
+    line-height: 45px;
+    font-size: 15px;
+    letter-spacing: 2px;
+    background: #384260;
+    color: #fff;
+    text-align: center;
+}
+
+.caseList{
+/* 	background-color: rgb(2,22,84); */
+	color:white;
+	line-height: 55px;
+    font-weight: bolder;
+    font-size: 20px;
+    position: absolute;
+    top: 0;
+    min-width:200px;
+
+    background-image: -webkit-radial-gradient(800px 800px at 400px 250px, rgb(2,22,84),rgb(11,74,156));
+  	background-image: radial-gradient(800px 800px at 400px 150px, rgb(2,22,84),rgb(11,74,156));
+
+
+}
+
+
+#xx td{
+	color:white;
+	background-color:rgb(2,22,84);
+	font-weight: 400;
+}
+
+/* .showCaseInfoMain  */
+
+
+
+
+
+
+.showCaseInfoMain {
+    overflow: auto;
+    height: calc(100% - 2px);
+}
+
+/* 职位信息列表结束 */
+
+
+
 
 

@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login, logout
 from apps.authPro.forms import LoginForm, RegisterForm
 from utils import restful, mcache
 from utils.captcha.captcha import Captcha
+
+
 from io import BytesIO
 from .models import User
 
@@ -29,7 +31,7 @@ class LoginView(View):
             # user = authenticate(username=telephone, password=password)  # 此种方法有bug
             user = User.objects.get(telephone=telephone)
             pwd = user.password
-            if check_password(password, pwd):
+            if check_password(password, pwd):   # 密码验证通过
                 next_url = request.GET.get("next")
                 if next_url:
                     return redirect(next_url)

@@ -231,7 +231,7 @@ html,body{
     margin-left: -105px;
 }
 .showMain .admRegMonthCase:before{
-    /*content:"学历统计";*/
+    content:"薪资水平";
     width: 240px;
     margin-left: -120px;
 }
@@ -241,7 +241,7 @@ html,body{
     margin-left: -90px;
 }
 .showMain .weekCaseRate:before{
-    /*content:"统计";*/
+    content:"其他统计";
     width: 240px;
     margin-left: -120px;
 }
@@ -294,11 +294,23 @@ html,body{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 /* 弹窗开始修改 的all  */
 /*功能及列表显示*/
 .showCase{
     position: absolute;
-    left: 25.2%;
+    left: 26%;
 /*     bottom: 15px; */
 	 bottom: 62px;
     width: 50%;
@@ -481,56 +493,20 @@ html,body{
     color: #7ea2f6;
 
 }
+
 #xxx{
 	background-color:rgb(4,92,97);
 }
 
-/*待处理 */
-.daichuli{
-    width: 18px;
-    height: 18px;
-    display: inline-block;
-    vertical-align: text-top;
-    background-color: #fe504d;
-}
-
-/*已处理 */
-.yichuli{
-    background-color: #4681f4;
-    width: 18px;
-    height: 18px;
-    display: inline-block;
-    vertical-align: text-top;
-}
-/*处理附件 */
-.chuzhiShow{
-    overflow: hidden;
-    display: flex;
-    flex-wrap: wrap;
-}
-.chuzhiShow>div{
-    flex-basis: 50%;
-}
-
-/*未指派 */
-.weizhipai{
-    width: 18px;
-    height: 18px;
-    display: inline-block;
-    background-color: #fedf0e;
-    vertical-align: text-top;
-}
-
-
-.detail_title_name {
-    height: 45px;
-    line-height: 45px;
-    font-size: 15px;
-    letter-spacing: 2px;
-    background: #384260;
-    color: #fff;
-    text-align: center;
-}
+/*.detail_title_name {*/
+/*    height: 45px;*/
+/*    line-height: 45px;*/
+/*    font-size: 15px;*/
+/*    letter-spacing: 2px;*/
+/*    background: #384260;*/
+/*    color: #fff;*/
+/*    text-align: center;*/
+/*}*/
 
 .caseList{
 /* 	background-color: rgb(2,22,84); */
@@ -555,11 +531,22 @@ html,body{
 	font-weight: 400;
 }
 
+/* .showCaseInfoMain  */
+
+
+
+
+
 
 .showCaseInfoMain {
     overflow: auto;
     height: calc(100% - 2px);
 }
+
+/* 弹窗结束修改 */
+
+
+
 
 
 

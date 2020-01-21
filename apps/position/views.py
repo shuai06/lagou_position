@@ -6,8 +6,9 @@ from wordcloud import WordCloud
 import PIL.Image as image
 import numpy as np
 
-from lagou_position.settings import MEDIA_ROOT  as media_path
-from lagou_position.settings import STATICFILES_DIRS as static_path
+# from lagou_position.settings import MEDIA_ROOT  as media_path
+# from lagou_position.settings import STATICFILES_DIRS as static_path
+
 from django.shortcuts import render,reverse,redirect
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
@@ -43,6 +44,24 @@ def get_pos(request):
     else:
         # return JsonResponse({'data': 'error!'})
         pass
+
+
+# 职位列表的筛选
+def get_xueli(request):
+    if request.method == 'POST':
+        parm = request.POST.get('parm')
+        typeName = request.POST.get('typeName')
+
+        if typeName == "学历":
+            positions = Position.objects.filter(xueli=parm)
+        elif typeName == "经验":
+            positions = Position.objects.filter(gzjy=parm)
+        elif typeName == "城市":
+            positions = Position.objects.filter(city=parm)
+
+        position_res = serializers.serialize('json', positions)  # 将查询结果json序列化
+        print(position_res)
+        return HttpResponse(position_res, content_type="application/json")   # 职位数据json
 
 
 # @login_required()

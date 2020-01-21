@@ -33,44 +33,43 @@
         <div class="caseInfoChart showMainModel" id="xueli"></div>
 
         <div class="caseWordCloud showMainModel">
-            <div id="wordImg" class="plugin">
-
+            <div id="wordCloudImg" class="plugin">
             </div>
         </div>
 
         <div class="monthCaseChart showMainModel" id="city"></div>
 
-        <div class="admRegMonthCase showMainModel" id="xzqmonthly" style="padding-left: 10px;"></div>
+        <div class="admRegMonthCase showMainModel" id="money" style="padding-left: 10px;"></div>
 
         <div class="monitorShowInfo showMainModel" id="jingyan"></div>
 
-        <div class="weekCaseRate showMainModel" id="weekly"></div>
-
+        <div class="weekCaseRate showMainModel" id="otherTJ"></div>
 
 
 
 
     <!--         修改弹窗开始 -->
-
+		    <%--案件信息--%>
     <div class="showCase1 showCase">
 
         <div class="showCaseInfo container" style="">
             <div class="showCaseInfoMain">
+				<div class="row">
+				 <div class="col-md-12 caseList" >职位列表
+				 <img src="{% static 'images/position/fold.png' %}" alt="图片未找到!" title="展开" id="upAndD">
+
+				 <span style="display:inline-block; float:right; cursor:pointer" id="closeList">X</span>
+				  </div>
+
+				</div>
+
                 <div class="row">
-                 <div class="col-md-12 caseList" >列表
-                 <img src="../../../images/fold.png" alt="图片未找到!" title="展开" id="upAndD">
-
-                 <span style="display:inline-block; float:right; cursor:pointer" onclick="closeSlideWin();">X</span>
-                  </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12" style="
-    width: 909px;
-    padding-right: 0px;">
+                    <div class="col-md-12" style="width: 909px;padding-right: 0px;">
                         <table id = "theadAndTbody" class="table">
-
+                            <thead>  <tr><th>职位</th><th>公司</th><th>城市</th><th>薪资</th><th>学历</th><th>经验</th> <th>详情</th></tr>  </thead>
+                            <tbody>
+                                <tr> <td></td> <td></td><td></td><td>查询数据为空!</td>  <td></td> <td></td> <td></td> </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -79,17 +78,18 @@
         </div>
     </div>
 
-    <!-- 修改弹窗结束 -->
-        </div>
-{#        <div class="exitBox"></div>#}
-{#        <script type="text/javascript" src="./js/controlEcharts.js" charset="UTF-8" ></script>#}
-        </div>
+<!-- 修改弹窗结束 -->
 
 
+
+
+
+        </div>
+
+{#    </div>#}
 
 
 {% endblock %}
-
 
 
 
