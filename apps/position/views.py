@@ -211,3 +211,11 @@ def charWorkJy(request):
         # print(qResult)
         return HttpResponse(json.dumps({'data': j_dict}), content_type="application/json")
 
+
+# 求职交流
+def connect_view(request):
+    username = request.session.get('user_name', '')
+    if not username:
+        return redirect('/auth/login/')
+    else:
+        return render(request, 'position/connect.html')

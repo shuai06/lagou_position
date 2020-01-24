@@ -302,14 +302,6 @@ function setGradient() {
 
 }
 
-$(document).ready(function () {
-    $(".navbar-nav .haha").hover(function () {
-        $(".navbar-nav .haha.active").removeClass("active");
-        $(this).addClass("active");
-    })
-});
-
-
 
 
 
