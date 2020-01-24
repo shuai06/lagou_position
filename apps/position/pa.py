@@ -23,8 +23,9 @@ db_config = {
 
 class PaPosition(object):
 
-    def __init__(self, cname):
-        self.mname = cname
+    def __init__(self, cname, user_id):
+        self.name = cname
+        self.user_id = user_id
 
     def get_json(self, url, num, name):
         qname = quote(name)  # 转码
@@ -122,7 +123,7 @@ class PaPosition(object):
                 ln12 = ''.join(str(s) for s in i[12])
                 # insert into student values(id,name,age)
                 sql = """insert into position_position values(%d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s', '%s','%s', '%s')""" % (
-                j, i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10], i[11], ln12, i[13], i[14], i[15], i[16], i[17], '用户', 'none')
+                j, i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10], i[11], ln12, i[13], i[14], i[15], i[16], i[17], self.user_id, 'none')
                 print(sql)
                 cursor.execute(sql)
 

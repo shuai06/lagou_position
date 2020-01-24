@@ -23,8 +23,8 @@ class RegisterForm(forms.Form):
     # captcha = forms.CaptchaField(label='验证码')
     # graph_captcha = forms.CharField(max_length=4, min_length=4,error_messages={"required": "图形验证码不能为空"})
 
-class ProfileForm(forms.Form):
-    avatar = forms.ImageField(label="头像")
+# class ProfileForm(forms.Form):
+#     avatar = forms.ImageField(label="头像")
 
 
 

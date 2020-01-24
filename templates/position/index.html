@@ -42,13 +42,17 @@
                     <div class="showCaseInfoMain">
 
                         <div class="row">
+                            <div class="col-md-1 form-group ">
+                            </div>
+                            <div class="col-md-3 form-group search">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" placeholder="搜索案件..." id="searchname">
+{#                                    <i class="fa fa-1x fa-search" style=" margin-top:10px;margin-right:10px;"></i>#}
+{#                                    <a class="input-group-addon" title="搜索" href="javascript:void(0);" id="search">#}
+{#                                    </a>#}
+                                </div>
+                            </div>
                          <div class="col-md-12 caseList" >
-{#                               暂时先不管这个搜索框  和上面的i的箭头#}
-{#                             <form class="form-inline">#}
-{#                                <div class="form-group">#}
-{#                                 <input type="text" class="form-control input-small" id="zw_search" placeholder="搜索...">#}
-{#                                </div>#}
-{#                            </form>#}
                              <img src="{% static 'images/position/fold.png' %}" alt="图片未找到!" title="展开" id="upAndD">
                              <span style="display:inline-block; float:right; cursor:pointer" id="closeList">X</span>
                           </div>
@@ -57,12 +61,13 @@
                         <div class="row">
                             <div class="col-md-12" style="padding-right: 0px;">
                                 <table id = "theadAndTbody" class="table">
-                                    <thead>  <tr><th>职位</th><th>公司</th><th>城市</th><th>薪资</th><th>学历</th><th>经验</th> <th>详情</th></tr>
-                                     </thead>
+                                    <thead>
+                                        <tr><th>职位</th><th>公司</th><th>城市</th><th>薪资</th><th>学历</th><th>经验</th> <th>详情</th></tr>
+                                    </thead>
                                     <tbody>
                                         <tr> <td></td> <td></td><td></td><td>查询数据为空!</td>  <td></td> <td></td> <td></td> </tr>
                                     </tbody>
-
+                                    <tbody>
                                 </table>
                             </div>
                         </div>
@@ -70,11 +75,7 @@
 
                 </div>
             </div>
-        {#<!--  职位列表结束 -->#}
-
-
-
-
+        <!--  职位列表结束 -->
 
 
 

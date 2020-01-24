@@ -24,7 +24,6 @@ var markersList = [];   // 点
 var markersArray = [];   // marks
 var points  = [];    // 热力图用的带权值的
 
-
 // 加载点数据  展示
 $("#btnDis").click(function () {
     heatmapOverlay.hide();   // 移除热力图
@@ -85,61 +84,37 @@ function addMarker(point,gsname,zwname,money,xueli,jy, detail){
     console.log("OK");
 }
 
-// 调用 聚合函数
-markerClustersPoint(markersList);
 
-//地图缩放重新计算聚合点
-map.addEventListener("zoomend",function(){
-    markerClustersPoint(markersList);
-});
+/*
+* 点聚合
+* */
 
-// 点聚合的函数
- function markerClustersPoint(marks) {
-     var markerClusterer = new BMapLib.MarkerClusterer(map, {
-         markers: markersList,
-         minClusterSize: 3,
-     });
-     // console.log(markerClusterer)
-     // 拿到所有的聚合点
-     var mk = markerClusterer._clusters;
-     var oldmk = [];
-
-     for (var i = 0; i < mk.length; i++) {
-         //小于3个marker不再进行标注
-         var mConut = mk[i]._markers.length;
-         if (3 > mConut) continue;
-         var options = [];
-
-         oldmk.push(addMarker(mk[i]._center));
-     }
-
- }
-//最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
-//
-// markerClusterer.addMarkers(markersList);
-
-
-// var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
-// markerClusterer.addMarkers(marker);
-
-// //每次拖动屏幕，重新获取聚合点
-// map.addEventListener("dragend",function(){
-//     var zoom=map.getZoom();
-//     console.log(zoom);
-//     if(zoom>17){
-//         //获取屏幕边界及四个点坐标
-//         var bound=map.getBounds();
-//         var minLat=bound.Xd;
-//         var maxLat=bound.Vd;
-//         var minLng=bound.Le;
-//         var maxLng=bound.He;
-//         var def=''+minLng+','+maxLat+','+maxLng+','+minLat+','+maxLng+','+maxLat+','+minLng+','+maxLat+','+minLng+','+maxLat+'';
-//         //此处用的后台接口，用于获取打点数据
-//         getStationsInPolygon(def,maxLng, minLng, maxLat, minLat)
-//
-//     }
+// //地图缩放重新计算聚合点
+// map.addEventListener("zoomend",function(){
+//     markerClustersPoint(markersArray);
 // });
-
+//
+// // 点聚合的函数
+//  function markerClustersPoint(marks) {
+//      var markerClusterer = new BMapLib.MarkerClusterer(map, {
+//          markers: markersArray,
+//          minClusterSize: 3,
+//      });
+//      // console.log(markerClusterer)
+//      // 拿到所有的聚合点
+//      var mk = markerClusterer._clusters;
+//      var oldmk = [];
+//
+//      for (var i = 0; i < mk.length; i++) {
+//          //小于3个marker不再进行标注
+//          var mConut = mk[i]._markers.length;
+//          if (3 > mConut) continue;
+//          var options = [];
+//
+//          oldmk.push(addMarker(mk[i]._center));
+//      }
+//
+//  }
 
 
 function flush_data(data) {
@@ -160,6 +135,9 @@ function flush_data(data) {
         // points.push({"lng":lo,"lat":la,"count":city_counts}); // 热力图的point权重
         addMarker(point,gsname,zwname,money,xueli,jy,detail);
     }
+     map.centerAndZoom(new BMap.Point(108.000, 37.915),6);  // 缩放
+     // var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markersArray});   // 聚合，数量貌似不准确？？？
+    // markerClustersPoint(markersArray);   // 调用聚合函数
 }
 
 
@@ -264,25 +242,6 @@ $('#btnXuan').click(() =>{
             }
 
     });
-    //     // 生成城市数量
-    //     $.ajax({
-    //         url: "count_city/",
-    //         type:"POST",
-    //         // async: false,
-    //         success:function (data) {
-    //
-    //             // 调用数据生成热力图
-    //             if (!isSupportCanvas()) {
-    //                 alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~')
-    //                 }
-    //
-    //             map.addOverlay(heatmapOverlay);
-    //             heatmapOverlay.setDataSet({data: points, max:100});
-    //             heatmapOverlay.show();
-    //
-    //         }
-    //
-    // });
 
     }
 );
@@ -290,7 +249,7 @@ $('#btnXuan').click(() =>{
 
 // 生成热力图的方法
 function gen_hot(){
-            // 先生成点的数据
+       // 先生成点的数据
         $.ajax({
             url: "get_pos/",
             type:"POST",
@@ -312,13 +271,10 @@ function gen_hot(){
                 map.addOverlay(heatmapOverlay);
                 heatmapOverlay.setDataSet({data: points, max:100});
                 heatmapOverlay.show();
+                map.centerAndZoom(new BMap.Point(108.000, 37.915),6);
             }
-
-            //
-
         });
-
-};
+}
 
 
 // 判断浏览区是否支持canvas
@@ -465,7 +421,7 @@ function getDataList(){
             $("#theadAndTbody").html(tableContents);
         }
         if(data.length ==0){
-                tableContents = "<tr> <td></td> <td></td><td></td><td>查询数据为空!</td>  <td></td> <td></td> <td></td> </tr>  </tbody>";
+                tableContents += "<tr> <td></td> <td></td><td></td><td>查询数据为空!</td>  <td></td> <td></td> <td></td> </tr>  </tbody>";
                 $("#theadAndTbody").html(tableContents);
                 }
         slideShowWin(data.length);
@@ -501,6 +457,15 @@ function getBoundary(){
         });
     }
 
+
+
+//一键清除
+function clearAll() {
+    //清除覆盖物
+    map.clearOverlays();
+    //清除聚合点
+    markerClusterer.clearMarkers(markersArray);
+}
 
 
 

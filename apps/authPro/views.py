@@ -4,24 +4,22 @@ from django.views import View
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 
-from apps.authPro.forms import LoginForm, RegisterForm, ProfileForm
+from apps.authPro.forms import LoginForm, RegisterForm
 from utils import restful, mcache
 from utils.captcha.captcha import Captcha
 import hashlib
 
 from io import BytesIO
 from .models import User
-
+from django.db import connection
 
 # 类视图
 # 登录
-class LoginView(View):
-    # 相当于 if request.method == 'GET'
-    def get(self, request):
-        return render(request, 'authPro/login.html', locals())
+def LoginView(request):
+    if request.method == 'GET':
+        return render(request, 'authPro/login.html')
 
-    # 相当于 if request.method == 'POST'
-    def post(self, request):
+    if request.method == 'POST':
         login_form = LoginForm(request.POST)
         message = "请检查填写的内容！"
         if login_form.is_valid():
@@ -30,17 +28,28 @@ class LoginView(View):
             hash_psd = hash_code(password)
             # 其他验证
             try:
-                user = User.objects.get(username=username)
-                if user.password == hash_psd:
+                # user = User.objects.get(username=username)
+                sql = "select * from authPro_user where username='"+ username + "';"
+                # user = User.objects.filter(username=str(username))
+                cursor = connection.cursor()
+                cursor.execute(sql)
+                db_user_tuple = cursor.fetchone()
+                if db_user_tuple[2] == hash_psd:
                     request.session['is_login'] = True
-                    request.session['user_id'] = user.id
-                    request.session['user_name'] = user.username
-                    request.session['user_avatar'] = user.avatar
-                    return redirect("/")
+                    request.session['user_id'] = db_user_tuple[0]
+                    request.session['user_name'] = db_user_tuple[1]
+                    # request.session['user_avatar'] = user.avatar
+
+                    next_url = request.GET.get("next", '')
+                    if next_url:
+                        return redirect(next_url)
+                    else:
+                        return redirect("/")
                 else:
                     message = "密码不正确！"
-            except:
+            except Exception as e:
                 message = "用户不存在！"
+                print(e)
         return render(request, 'authPro/login.html', locals())
 
 
@@ -53,11 +62,14 @@ def logout_view(request):
     return redirect('/auth/login/')
 
 
-# 注册
+# 注册   next_url的修改
 def register_view(request):
-    if request.session.get('is_login', None):
-        # 登录状态不允许注册。你可以修改这条原则！
-        return redirect("/")
+    if request.method == "GET":
+        return render(request, "authPro/register.html")
+
+    # if request.session.get('is_login', None):
+    #     # 登录状态不允许注册。你可以修改这条原则！
+    #     return redirect("/")
 
     if request.method == "POST":
         register_form = RegisterForm(request.POST)

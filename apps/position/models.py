@@ -24,7 +24,7 @@ class Position(models.Model):
     lat = models.CharField(max_length=20)               # 纬度
     lon = models.CharField(max_length=20)              # 经度
     detail_link = models.CharField(max_length=50)      # 职位详情链接
-    user = models.CharField(max_length=50, null=True)  # 所属的用户
+    user_id = models.IntegerField(null=True)  # 所属的用户
     city_count = models.IntegerField(null=True)         # 城市数量
 
     def __str__(self):

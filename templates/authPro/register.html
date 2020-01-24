@@ -16,7 +16,7 @@
 {% block content %}
     <div class="container">
         <div class="col-md-4 col-md-offset-4">
-          <form class='form-register' action="/auth/register/" method="post">
+          <form class='form-register' action="{% url 'authPro:register' %}" method="post">
 
                 {% if message %}
                     <div class="alert alert-warning">{{ message }}</div>
@@ -41,7 +41,7 @@
                 <input type="password" name='password_repeat' class="form-control" id="id_password_repeat" placeholder="Password" required>
               </div>
 
-              <button type="reset" class="btn btn-default pull-left">重置</button>
+              <button class="btn btn-danger pull-left"><a href="{% url 'authPro:login' %}" style="color: #FFFFFF">登录</a></button>
               <button type="submit" class="btn btn-primary pull-right">注册</button>
 
           </form>

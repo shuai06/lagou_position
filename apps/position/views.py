@@ -6,8 +6,8 @@ from wordcloud import WordCloud
 import PIL.Image as image
 import numpy as np
 
-# from lagou_position.settings import MEDIA_ROOT  as media_path
-# from lagou_position.settings import STATICFILES_DIRS as static_path
+from lagou_position.settings import MEDIA_ROOT  as media_path
+from lagou_position.settings import STATICFILES_DIRS as static_path
 
 from django.shortcuts import render,reverse,redirect
 from django.http import HttpResponse,JsonResponse
@@ -27,17 +27,20 @@ from django.db import connection
 
 # 首页
 # @csrf_protect
+# @login_required
 def index(request):
-    return render(request, 'position/index.html')
-
+    username = request.session.get('user_name', '')
+    if not username:
+        return redirect('/auth/login/')
+    else:
+        return render(request, 'position/index.html')
 
 
 # @csrf_protect
-# @login_required()
 # 获取点位置
 def get_pos(request):
     if request.method == 'POST':
-        positions = Position.objects.all()
+        positions = Position.objects.filter(user_id=request.session.get('user_id'))
         position_res = serializers.serialize('json', positions)  # 讲查询结果json序列化
         print(position_res)
         return HttpResponse(position_res, content_type="application/json")   # 职位数据json
@@ -57,14 +60,13 @@ def get_xueli(request):
         elif typeName == "经验":
             positions = Position.objects.filter(gzjy=parm)
         elif typeName == "城市":
-            positions = Position.objects.filter(city=parm)
+            positions = Position.objects.filter(city=parm, user_id=request.session.get('user_id'))
 
         position_res = serializers.serialize('json', positions)  # 将查询结果json序列化
         print(position_res)
         return HttpResponse(position_res, content_type="application/json")   # 职位数据json
 
 
-# @login_required()
 # 点击爬取职位信息
 def search(request):
     if request.method == "POST":
@@ -74,13 +76,13 @@ def search(request):
         try:
 
             # 先判断数据表原来有没有数据
-            result = Position.objects.filter()
+            result = Position.objects.filter(user_id=request.session.get('user_id'))
             if result.exists():
                 print("QuerySet has Data")  # 清空原来数据
-                Position.objects.all().delete()
+                Position.objects.filter(user_id=request.session.get('user_id')).delete()
 
             url = " https://www.lagou.com/jobs/positionAjax.json?needAddtionalResult=false"
-            pa = PaPosition(canshu)
+            pa = PaPosition(canshu, request.session['user_id'])
             # 用户输入的参数
             first_page = pa.get_json(url, 1, canshu)  # 先获取第一页数据
             total_page_count = first_page['content']['positionResult']['totalCount']  # 职位总数
@@ -118,14 +120,17 @@ def search(request):
 
 
 # @csrf_protect
-# @login_required()
 # 图表展示职位分析
+# @login_required
 def analyze(request):
-    return render(request, 'position/analyze.html')
+    username = request.session.get('user_name', '')
+    if not username:
+        return redirect('/auth/login/')
+    else:
+        return render(request, 'position/analyze.html')
 
 
 # 统计城市职位数量  （热力图用的）
-# @login_required()
 def count_city(request):
     if request.method == "POST":
         successData = {
@@ -136,7 +141,7 @@ def count_city(request):
         }
         city_dict = {}
         try:
-            city_counts = Position.objects.values('city')
+            city_counts = Position.objects.filter(user_id=request.session.get('user_id')).values('city')
             for i in city_counts:
                 if i['city'] in city_dict:
                     count = city_dict[i['city']]
@@ -145,14 +150,14 @@ def count_city(request):
                 count = count + 1
                 city_dict[i['city']] = count
                 # print(i.value())
-            all_data = Position.objects.all()
+            all_data = Position.objects.filter(user_id=request.session.get('user_id'))
             print(all_data)
             for j in all_data:
                 # print(j.city)
                 if j.city in city_dict.keys():  # 判断sql查出来的city, 是否在字典的key中
                     # 查出数据,update他的count的值为对应字典键值对的value
                     # 如果在，就更新数据
-                    Position.objects.filter(id=j.id).update(city_count=city_dict[j.city])
+                    Position.objects.filter(id=j.id, user_id=request.session.get('user_id')).update(city_count=city_dict[j.city])
             # print(city_dict)
             print("更新count_city完成!")
         except Exception as e:
@@ -164,47 +169,16 @@ def count_city(request):
 
 # 测试
 def other(request):
+    # print(type(request.session['user_id']))
     return render(request, 'position/other.html')
 
 
-# 词云
-def gen_WordCloud(request):
-    # with open("../../static/test.txt") as fp:
-    #     text = fp.read()
-    #     # print(text)
-    #     # 将读取的中文文档进行分词
-    #     text = trans_CN(text)
-    #     mask = np.array(image.open(static_path + "/images/position/love.jpg"))
-    #     wordcloud = WordCloud(
-    #         # 添加遮罩层
-    #         mask=mask,
-    #         # 生成中文字的字体,必须要加,不然看不到中文
-    #         # font_path="C:\Windows\Fonts\STXINGKA.TTF"
-    #     ).generate(text)
-    #     image_produce = wordcloud.to_image()
-    #     # image_produce.show()
-    #     rand = str(time.strftime("%Y-%m-%d-%H%M%S", time.localtime(time.time())))
-    #     filename = media_path + "/" + rand + ".png"
-    #     image_produce.save(filename)
-    #     image_data = open(filename, "rb").read()
-    #     return HttpResponse(image_data, content_type="image/png")
-    pass
-
-
-# 分词
-def trans_CN(text):
-    # # 接收分词的字符串
-    # word_list = jieba.cut(text)
-    # # 分词后在单独个体之间加上空格
-    # result = " ".join(word_list)
-    # return result
-    pass
 
 
 # 统计图 char city
 def charCity(request):
     if request.method == "POST":
-        qResult = Position.objects.values("city", "city_count").distinct().order_by('-city_count')[0:12]  # 从大到小排序
+        qResult = Position.objects.filter(user_id=request.session.get('user_id')).values("city", "city_count").distinct().order_by('-city_count')[0:12]  # 从大到小排序
         cityList = list(qResult)   # 直接把QuerySet转为List
         # print(cityList)
         return HttpResponse(json.dumps({'data': cityList}), content_type="application/json")
@@ -215,10 +189,10 @@ def charCity(request):
 def charXueli(request):
     if request.method == "POST":
         cursor = connection.cursor()
-        cursor.execute("select xueli,count(*) as x_count from position_position group by xueli")
+        sql = "select xueli,count(*) as x_count from position_position where user_id="+str(request.session.get('user_id'))+ " group by xueli"
+        cursor.execute(sql)
         x_dict = dict(list(cursor.fetchall()))
-        print(x_dict)
-
+        # print(x_dict)
         # print(qResult)
         return HttpResponse(json.dumps({'data': x_dict}), content_type="application/json")
 
@@ -228,9 +202,11 @@ def charXueli(request):
 def charWorkJy(request):
     if request.method == "POST":
         cursor = connection.cursor()
-        cursor.execute("select gzjy, count(*) as j_count from position_position group by gzjy;")
+        sql = "select gzjy, count(*) as j_count from position_position where user_id="+str(request.session.get('user_id'))+" group by gzjy;"
+        # print(sql)
+        cursor.execute(sql)
         j_dict = dict(list(cursor.fetchall()))
-        print(j_dict)
+        # print(j_dict)
 
         # print(qResult)
         return HttpResponse(json.dumps({'data': j_dict}), content_type="application/json")
