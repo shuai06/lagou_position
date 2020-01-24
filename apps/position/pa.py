@@ -78,23 +78,25 @@ class PaPosition(object):
         page_info_list = []
         for i in jobs_list:  # 循环每一页所有职位信息
             job_info = []
-            job_info.append(i['companyFullName'])
-            job_info.append(i['companyShortName'])
-            job_info.append(i['companySize'])
-            job_info.append(i['financeStage'])
-            job_info.append(i['district'])
-            job_info.append(i['positionName'])
-            job_info.append(i['workYear'])
-            job_info.append(i['education'])
-            job_info.append(i['salary'])
-            job_info.append(i['positionAdvantage'])
-            job_info.append(i['industryField'])
-            job_info.append(i['firstType'])
-            job_info.append(i['companyLabelList'])
-            job_info.append(i['secondType'])
-            job_info.append(i['city'])
-            job_info.append(i['latitude'])  # 纬度
-            job_info.append(i['longitude'])  # 经度
+            job_info.append(i['companyFullName'])             # 公司全名
+            job_info.append(i['companyShortName'])            # 公司简称
+            job_info.append(i['companySize'])                 # 公司规模
+            job_info.append(i['financeStage'])                # 融资规模
+            job_info.append(i['district'])                    # 城市的街区
+            job_info.append(i['positionName'])                # 职位名称
+            job_info.append(i['workYear'])                    # 工作经验
+            job_info.append(i['education'])                   # 学历
+            job_info.append(i['salary'])                      # 薪资（月薪）
+            job_info.append(i['positionAdvantage'])           # 职位诱惑      "年底多薪 技术大牛 学术氛围好 成长迅速"
+            job_info.append(i['industryField'])               # 领域
+            job_info.append(i['firstType'])                   # "开发|测试|运维类"
+            job_info.append(i['companyLabelList'])            # ["弹性工作", "领导好", "扁平管理", "五险一金"]
+            job_info.append(i['secondType'])                  # "人工智能"
+            job_info.append(i['city'])                        # 城市
+            job_info.append(i['latitude'])                    # 纬度
+            job_info.append(i['longitude'])                   # 经度
+            job_info.append("https://www.lagou.com/jobs/" + str(i['positionId']) + ".html")    # 职位详情链接
+
             page_info_list.append(job_info)
         self.save_mysql(page_info_list)
         return page_info_list
@@ -119,8 +121,8 @@ class PaPosition(object):
 
                 ln12 = ''.join(str(s) for s in i[12])
                 # insert into student values(id,name,age)
-                sql = """insert into position_position values(%d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s', '%s')""" % (
-                j, i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10], i[11], ln12, i[13], i[14], i[15], i[16], 'none')
+                sql = """insert into position_position values(%d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s', '%s','%s', '%s')""" % (
+                j, i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10], i[11], ln12, i[13], i[14], i[15], i[16], i[17], '用户', 'none')
                 print(sql)
                 cursor.execute(sql)
 

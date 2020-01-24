@@ -457,7 +457,7 @@ function getDataListXueliandJY(parm, typeName){
                             // gzjy
                             tableContents+="<td>"+item.gzjy+"</td>";
                             // 详情
-                            tableContents+="<td style='cursor: pointer'>"+ "查看" +"</td>";
+                            tableContents+="<td style='cursor: pointer'><a href='" + item.detail_link + "' target='_blank'>查看</a> </td>";
                             tableContents += "</tr>";
 
             }

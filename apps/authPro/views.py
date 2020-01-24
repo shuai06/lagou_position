@@ -4,10 +4,10 @@ from django.views import View
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 
-from apps.authPro.forms import LoginForm, RegisterForm
+from apps.authPro.forms import LoginForm, RegisterForm, ProfileForm
 from utils import restful, mcache
 from utils.captcha.captcha import Captcha
-
+import hashlib
 
 from io import BytesIO
 from .models import User
@@ -18,61 +18,78 @@ from .models import User
 class LoginView(View):
     # 相当于 if request.method == 'GET'
     def get(self, request):
-        return render(request, 'authPro/login.html')
+        return render(request, 'authPro/login.html', locals())
 
     # 相当于 if request.method == 'POST'
     def post(self, request):
-        # form 实例化  =》 self === form
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            telephone = form.cleaned_data['telephone']
-            password = form.cleaned_data['password']
-            remember = form.cleaned_data['remember']
-            # user = authenticate(username=telephone, password=password)  # 此种方法有bug
-            user = User.objects.get(telephone=telephone)
-            pwd = user.password
-            if check_password(password, pwd):   # 密码验证通过
-                next_url = request.GET.get("next")
-                if next_url:
-                    return redirect(next_url)
-                login(request, user)
-                if remember:
-                    # None表示14天 单位是秒
-                    request.session.set_expiry(None)
-                return restful.ok()
-
-            return restful.params_error(message='用户名或密码错误')
-
-        return restful.params_error(message=form.get_error())
+        login_form = LoginForm(request.POST)
+        message = "请检查填写的内容！"
+        if login_form.is_valid():
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            hash_psd = hash_code(password)
+            # 其他验证
+            try:
+                user = User.objects.get(username=username)
+                if user.password == hash_psd:
+                    request.session['is_login'] = True
+                    request.session['user_id'] = user.id
+                    request.session['user_name'] = user.username
+                    request.session['user_avatar'] = user.avatar
+                    return redirect("/")
+                else:
+                    message = "密码不正确！"
+            except:
+                message = "用户不存在！"
+        return render(request, 'authPro/login.html', locals())
 
 
 # 退出登录
 def logout_view(request):
-    logout(request)
+    if not request.session.get('is_login', None):
+        # 如果本来就未登录，也就没有登出一说
+        return redirect("/")
+    request.session.flush()   # flush会一次性清空session中所有内容
     return redirect('/auth/login/')
 
 
 # 注册
-class RegisterView(View):
-    # 相当于 if request.method == 'GET'
-    def get(self, request):
-        return render(request, 'authPro/register.html')
+def register_view(request):
+    if request.session.get('is_login', None):
+        # 登录状态不允许注册。你可以修改这条原则！
+        return redirect("/")
 
-    # 相当于 if request.method == 'POST'
-    def post(self, request):
-        form = RegisterForm(request.POST)
-        # True and True
-        if form.is_valid() and form.valid_data(request):
-            telephone = form.cleaned_data['telephone']
-            password = form.cleaned_data['password']
-            username = form.cleaned_data['username']
-            # User 自定义   创建用户
-            user = User.objects.create_user(telephone=telephone, username=username, password=password)
-            # 注册完之后 login
-            login(request, user)
-            # {code:0,message:'',data:null}
-            return restful.ok()
-        return restful.params_error(message=form.get_error())
+    if request.method == "POST":
+        register_form = RegisterForm(request.POST)
+        message = "请检查填写的内容！"
+        if register_form.is_valid():  # 获取数据
+            username = register_form.cleaned_data['username']
+            password = register_form.cleaned_data['password']
+            password_repeat = register_form.cleaned_data['password_repeat']
+            email = register_form.cleaned_data['email']
+            if password != password_repeat:  # 判断两次密码是否相同
+                message = "两次输入的密码不同！"
+                return render(request, 'authPro/register.html', locals())
+            else:
+                same_name_user = User.objects.filter(username=username)
+                if same_name_user:  # 用户名唯一
+                    message = '用户已经存在，请重新选择用户名！'
+                    return render(request, 'authPro/register.html', locals())
+                same_email_user = User.objects.filter(email=email)
+                if same_email_user:  # 邮箱地址唯一
+                    message = '该邮箱地址已被注册，请使用别的邮箱！'
+                    return render(request, 'authPro/register.html', locals())
+
+                # 当一切都OK的情况下，创建新用户
+                new_user = User()
+                new_user.username = username
+                new_user.password = hash_code(password)
+                new_user.email = email
+                new_user.save()
+                return redirect('/auth/login/')  # 自动跳转到登录页面
+    register_form = RegisterForm()
+    return render(request, 'authPro/register.html', locals())
+
 
 
 # 图形验证码
@@ -95,5 +112,22 @@ def graph_captcha(request):
     return response
 
 
+def hash_code(s, salt='mysite'):# 加点盐
+    h = hashlib.sha256()
+    s += salt
+    h.update(s.encode())  # update方法只接收bytes类型
+    return h.hexdigest()
 
 
+# # 编辑头像
+# def profile_edit(request, id):
+#     if request.method == 'POST':
+#         # 上传的文件保存在 request.FILES 中，通过参数传递给表单类
+#         profile_form = ProfileForm(request.POST, request.FILES)
+#         if profile_form.is_valid():
+#
+
+
+# 关于我
+def aboutme_view(request):
+    return render(request, "authPro/aboutme.html")

@@ -61,7 +61,7 @@ function bd_encrypt(gg_lng, gg_lat) {
 
 
 // 编写自定义函数,创建标注
-function addMarker(point,gsname,zwname,money,xueli,jy){
+function addMarker(point,gsname,zwname,money,xueli,jy, detail){
     var marker = new BMap.Marker(point);
     map.addOverlay(marker);
     markersArray.push(marker);
@@ -74,6 +74,7 @@ function addMarker(point,gsname,zwname,money,xueli,jy){
     content = content + "<tr><td> 薪资：" +money+"</td></tr>";
     content = content + "<tr><td> 学历：" +xueli+"</td></tr>";
     content = content + "<tr><td> 经验：" +jy+"</td></tr>";
+    content = content + "<tr><td> 详情：<a href='" + detail + "' target='_blank'>查看</a> </td></tr>";
     // content = content + "<tr><td> 位置：" + gname +"</td></tr>";
     content += "</table>";
     var infowindow = new BMap.InfoWindow(content);
@@ -84,7 +85,7 @@ function addMarker(point,gsname,zwname,money,xueli,jy){
     console.log("OK");
 }
 
-// diao yong
+// 调用 聚合函数
 markerClustersPoint(markersList);
 
 //地图缩放重新计算聚合点
@@ -151,15 +152,14 @@ function flush_data(data) {
         var money = data[i]['fields']['money'];
         var xueli = data[i]['fields']['xueli'];
         var jy = data[i]['fields']['gzjy'];
-        var  city_counts = data[i]['fields']['city_count'];
+        // var city_counts = data[i]['fields']['city_count'];
         var point = new BMap.Point(lo, la);
+        var detail = data[i]['fields']['detail_link'];
 
         markersList.push(point);  // 将点坐标push到点数组中
-        points.push({"lng":lo,"lat":la,"count":city_counts});
-        addMarker(point,gsname,zwname,money,xueli,jy);
+        // points.push({"lng":lo,"lat":la,"count":city_counts}); // 热力图的point权重
+        addMarker(point,gsname,zwname,money,xueli,jy,detail);
     }
-
-
 }
 
 
@@ -187,38 +187,60 @@ function alertWin() {
 }
 
 
-// pa数据
-$("#btnPa").click(function (){
-       heatmapOverlay.hide();
-       if(markersArray){
-            for(let i=0; i<markersArray.length; i++){
-                markersArray[i].remove();  // delete marks
-            }
-        }
-       alertWin();
-        $(".Loading").show();
+// 禁用默认回车事件
+$("#btnPa").keydown(function(e) {
+       if (e.keyCode == 13) {
+              alert("12345....");
+       }
+ });
 
-        $.ajax({
-            url: "search/",
-            type:"POST",
-            data:{
-                'zname': $("#zw_name").val(),
-            },
-           success: (data) => {
-               // console.log(data);
-               console.log("success!!!");
-               closeWin();
-               $("#zw_name").val("");
-               alert("数据爬取完成!");
-
-           },
-           error: () => {
-               console.log("Error");
-           }
-
-    });
+ $('#pa_form').on('keydown', function (event) {
+    if (event.keyCode == 13) return false;
 });
 
+// pa数据
+$("#btnPa").click(function (){
+       // 如果输入框为空，alter
+        input_txt = $.trim($("#zw_name").val());
+
+        if(input_txt == null || input_txt == undefined || input_txt == "" ){
+            alert("请输入要查询的职位，再进行查询");
+        }else{
+               heatmapOverlay.hide();
+               if(markersArray){
+                    for(let i=0; i<markersArray.length; i++){
+                        markersArray[i].remove();  // delete marks
+                    }
+                }
+               alertWin();
+                $(".Loading").show();
+
+                $.ajax({
+                    url: "search/",
+                    type:"POST",
+                    data:{
+                        'zname': $("#zw_name").val(),
+                    },
+                   success: (data) => {
+                       // console.log(data);
+                       console.log("success!!!");
+                       closeWin();
+                       $("#zw_name").val("");
+                       alert("数据爬取完成,点击展示数据查看");
+
+                   },
+                   error: () => {
+                       console.log("Error");
+                   }
+
+            });
+
+
+        }
+
+
+
+});
 
 
 
@@ -231,15 +253,58 @@ $('#btnXuan').click(() =>{
         }else{
             alert("请先生成点数据！")
         }
-        // 生成城市数量
+        // 开始先做计算统计count
         $.ajax({
             url: "count_city/",
             type:"POST",
             // async: false,
             success:function (data) {
+                console.log("begin gen hot map");
+                gen_hot();    // 计算完成city_count之后再调用方法生成热力图
+            }
+
+    });
+    //     // 生成城市数量
+    //     $.ajax({
+    //         url: "count_city/",
+    //         type:"POST",
+    //         // async: false,
+    //         success:function (data) {
+    //
+    //             // 调用数据生成热力图
+    //             if (!isSupportCanvas()) {
+    //                 alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~')
+    //                 }
+    //
+    //             map.addOverlay(heatmapOverlay);
+    //             heatmapOverlay.setDataSet({data: points, max:100});
+    //             heatmapOverlay.show();
+    //
+    //         }
+    //
+    // });
+
+    }
+);
 
 
-                // 调用数据生成热力图
+// 生成热力图的方法
+function gen_hot(){
+            // 先生成点的数据
+        $.ajax({
+            url: "get_pos/",
+            type:"POST",
+            // async: false,
+            success:function (data) {
+                for(var i=0; i<data.length-1; i++) {
+                    var res = bd_encrypt(data[i]['fields']['lon'], data[i]['fields']['lat']);
+                    var lo = res.bd_lng;
+                    var la = res.bd_lat;
+                    var city_counts = data[i]['fields']['city_count'];
+                    points.push({"lng": lo, "lat": la, "count": city_counts}); // 热力图的point权重
+                }
+                // 再 热力图
+                                // 调用数据生成热力图
                 if (!isSupportCanvas()) {
                     alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~')
                     }
@@ -247,13 +312,13 @@ $('#btnXuan').click(() =>{
                 map.addOverlay(heatmapOverlay);
                 heatmapOverlay.setDataSet({data: points, max:100});
                 heatmapOverlay.show();
-
             }
 
-    });
+            //
 
-    }
-);
+        });
+
+};
 
 
 // 判断浏览区是否支持canvas
@@ -286,7 +351,7 @@ $(document).ready(function () {
         $(".navbar-nav .haha.active").removeClass("active");
         $(this).addClass("active");
     })
-})
+});
 
 
 
@@ -343,17 +408,12 @@ $("#upAndD").on("click",function () {
 
 
 
-    //关闭按钮
-    $("#closeList").on("click", function(){
-    	 $(".showCaseInfo").css("height","0");
+//关闭按钮
+$("#closeList").on("click", function(){
+     $(".showCaseInfo").css("height","0");
 //    	 $(".showCaseInfo").css("transition","none");
 //    	 $(".showCaseInfo").slideDown();
-    });
-
-
-
-// 案件列表结束
-
+});
 
 
 
@@ -397,7 +457,7 @@ function getDataList(){
                             // gzjy
                             tableContents+="<td>"+item.gzjy+"</td>";
                             // 详情
-                            tableContents+="<td style='cursor: pointer'>"+ "查看" +"</td>";
+                            tableContents+="<td style='cursor: pointer'><a href='" + item.detail_link + "' target='_blank'>查看</a> </td>";
                             tableContents += "</tr>";
 
             }
@@ -415,6 +475,54 @@ function getDataList(){
           }
     });
 }
+// 职位列表结束
+
+
+
+
+// 行政区覆盖 （筛选/选择的时候可以用）
+function getBoundary(){
+        var bdary = new BMap.Boundary();
+        bdary.get("河北省", function(rs){       //获取行政区域
+            map.clearOverlays();        //清除地图覆盖物
+            var count = rs.boundaries.length; //行政区域的点有多少个
+            if (count === 0) {
+                alert('未能获取当前输入行政区域');
+                return ;
+            }
+              var pointArray = [];
+            for (var i = 0; i < count; i++) {
+                var ply = new BMap.Polygon(rs.boundaries[i], {strokeWeight: 2, strokeColor: "#ff0000",fillColor:""}); //建立多边形覆盖物
+                map.addOverlay(ply);  //添加覆盖物
+                pointArray = pointArray.concat(ply.getPath());
+            }
+            map.setViewport(pointArray);    //调整视野
+            addlabel();
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

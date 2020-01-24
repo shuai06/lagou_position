@@ -3,52 +3,92 @@
 {% block title %}  注册 {%  endblock %}
 
 {% block link %}
-    <link rel="stylesheet" href="{% static 'css/authPro/auth.css' %}">
+{#    <link rel="stylesheet" href="{% static 'css/authPro/auth.css' %}">#}
+    <link rel="stylesheet" href="{% static 'css/authPro/register.css' %}">
 {%  endblock %}
 
 
 {% block header %}
 {% endblock %}
 
+
+
 {% block content %}
-    <!-- 注册 -->
-<!-- container start -->
-<main id="container">
-  <div class="register-contain">
-    <div class="top-contain">
-      <h4 class="please-register">请注册</h4>
-      <a href="{% url 'authPro:login' %}" class="login">立即登录 &gt;</a>
-    </div>
-    <form action="" method="post" class="form-contain">
-      <div class="form-item">
-        <input type="tel" placeholder="请输入手机号" name="telephone" class="form-control" autocomplete="off" autofocus>
-      </div>
+    <div class="container">
+        <div class="col-md-4 col-md-offset-4">
+          <form class='form-register' action="/auth/register/" method="post">
 
-      <div class="form-item">
-        <input type="text" placeholder="请输入用户名" name="username" class="form-control" autocomplete="off">
-      </div>
-      <div class="form-item">
-        <input type="password" placeholder="请输入密码" name="password" class="form-control">
-      </div>
-      <div class="form-item">
-        <input type="password" placeholder="请确认密码" name="password_repeat" class="form-control">
-      </div>
-      <div class="form-item">
-        <input type="text" placeholder="请输入图形验证码" name="captcha_graph" class="form-captcha">
-        <a href="javascript:void(0);" class="captcha-graph-img">
-          <img src="{% url 'authPro:graph_captcha' %}" alt="验证码" title="点击刷新">
-        </a>
-      </div>
-      <div class="form-item">
-        <input type="submit" value="立即注册" class="register-btn">
-      </div>
-    </form>
-  </div>
-</main>
+                {% if message %}
+                    <div class="alert alert-warning">{{ message }}</div>
+                {% endif %}
 
+              <h2 class="text-center">欢迎注册</h2>
 
+              <div class="form-group">
+                <label for="id_username">用户名：</label>
+                <input type="text" name='username' class="form-control" id="id_username" placeholder="Username" autofocus required>
+              </div>
+              <div class="form-group">
+                <label for="id_email">邮箱：</label>
+                <input type="text" name='email' class="form-control" id="id_email" placeholder="Email" required>
+              </div>
+              <div class="form-group">
+                <label for="id_password">密码：</label>
+                <input type="password" name='password' class="form-control" id="id_password" placeholder="Password" required>
+              </div>
+             <div class="form-group">
+                <label for="id_password_repeat">确认密码：</label>
+                <input type="password" name='password_repeat' class="form-control" id="id_password_repeat" placeholder="Password" required>
+              </div>
+
+              <button type="reset" class="btn btn-default pull-left">重置</button>
+              <button type="submit" class="btn btn-primary pull-right">注册</button>
+
+          </form>
+        </div>
+    </div> <!-- /container -->
 {% endblock %}
 
+
+{#{% block content %}#}
+{#    <!-- 注册 -->#}
+{#<!-- container start -->#}
+{#<main id="container">#}
+{#  <div class="register-contain">#}
+{#    <div class="top-contain">#}
+{#      <h4 class="please-register">请注册</h4>#}
+{#      <a href="{% url 'authPro:login' %}" class="login">立即登录 &gt;</a>#}
+{#    </div>#}
+{#    <form action="" method="post" class="form-contain">#}
+{#      <div class="form-item">#}
+{#        <input type="tel" placeholder="请输入手机号" name="telephone" class="form-control" autocomplete="off" autofocus>#}
+{#      </div>#}
+{##}
+{#      <div class="form-item">#}
+{#        <input type="text" placeholder="请输入用户名" name="username" class="form-control" autocomplete="off">#}
+{#      </div>#}
+{#      <div class="form-item">#}
+{#        <input type="password" placeholder="请输入密码" name="password" class="form-control">#}
+{#      </div>#}
+{#      <div class="form-item">#}
+{#        <input type="password" placeholder="请确认密码" name="password_repeat" class="form-control">#}
+{#      </div>#}
+{#      <div class="form-item">#}
+{#        <input type="text" placeholder="请输入图形验证码" name="captcha_graph" class="form-captcha">#}
+{#        <a href="javascript:void(0);" class="captcha-graph-img">#}
+{#          <img src="{% url 'authPro:graph_captcha' %}" alt="验证码" title="点击刷新">#}
+{#        </a>#}
+{#      </div>#}
+{#      <div class="form-item">#}
+{#        <input type="submit" value="立即注册" class="register-btn">#}
+{#      </div>#}
+{#    </form>#}
+{#  </div>#}
+{#</main>#}
+{##}
+{##}
+{#{% endblock %}#}
+{##}
 
 
 

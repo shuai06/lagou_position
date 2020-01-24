@@ -39,13 +39,15 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    {% if user.is_authenticated %}
+{#                    {% if user.is_authenticated %}#}
+                    {% if request.session.is_login %}
 {#                        如果用户登录#}
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">我的资料</a></li>
-                                <li><a href="#">账户管理</a></li>
+{#                        <img src="{{ request.session.user_avatar.url }}" style="max-width: 20%; border-radius: 15%;"/>#}
+                        <li class="dropdown" style="display: inline-block">
+{#                        头像#}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-size: 16px;">{{ request.session.user_name }} <span class="caret"></span></a>
+                            <ul class="dropdown-menu" >
+                                <li><a href="{% url 'authPro:aboutme' %}">我的资料</a></li>
                                 <li><a href="#">...</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{% url 'authPro:logout' %}">退出登录</a></li>
@@ -104,6 +106,7 @@
 
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 {#下面这个是基于jq的，所以要写在他的后面#}
 <script src="{% static 'js/base/setup.js' %}"></script>
 <script src="{% static 'js/base/message.js' %}"></script>

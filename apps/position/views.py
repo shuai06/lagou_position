@@ -86,7 +86,7 @@ def search(request):
             total_page_count = first_page['content']['positionResult']['totalCount']  # 职位总数
             num = pa.get_page_num(total_page_count)  # 页码数
             total_info = []
-            time.sleep(5)
+            time.sleep(1)
             print("{0}相关职位总数:{1},总页数为:{2}".format(canshu, total_page_count, num))
             # 正式开始
             for num in range(1, num + 1):
@@ -97,7 +97,7 @@ def search(request):
                 # print("每一页python相关的职位信息:%s" % page_info, '\n\n')
                 total_info += page_info
                 print('已经爬取到第{}页，职位总数为{}'.format(num, len(total_info)))
-                time.sleep(10)
+                time.sleep(1)
 
                 print("OK!")
         except Exception as e:
@@ -207,7 +207,6 @@ def charCity(request):
         qResult = Position.objects.values("city", "city_count").distinct().order_by('-city_count')[0:12]  # 从大到小排序
         cityList = list(qResult)   # 直接把QuerySet转为List
         # print(cityList)
-
         return HttpResponse(json.dumps({'data': cityList}), content_type="application/json")
 
 
