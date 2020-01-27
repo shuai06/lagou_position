@@ -31,9 +31,18 @@
                 <input type="password" name='password' class="form-control" id="id_password" placeholder="Password" required>
               </div>
 
-{#              <button id="reg" class="btn btn-danger pull-left"><a href="{% url 'authPro:register' %}" style="color: #FFFFFF">注册</a></button>#}
+              <div class="form-group">
+                <label for="id_captcha_graph">图形验证码：</label>
+                <input type="text" placeholder="验证码" name="captcha_graph" class="form-control form-captcha" id="id_captcha_graph" maxlength="4">
+                <a href="javascript:void(0);" class="captcha-graph-img">
+                  <img src="{% url 'authPro:graph_captcha' %}" alt="验证码" title="点击刷新">
+                </a>
+              </div>
 
-              <button type="submit" class="btn btn-primary pull-right">登录</button>
+              <div>
+                  <button id="reg" class="btn btn-danger pull-left"><a href="{% url 'authPro:register' %}" style="color: #FFFFFF">注册</a></button>
+                  <button type="submit" class="btn btn-primary pull-right">登录</button>
+              </div>
 
           </form>
         </div>
@@ -78,7 +87,9 @@
 
 
 
-{#{% block script %}#}
+{% block script %}
 {#    <script src="{% static 'js/authPro/auth.js' %}"></script>#}
-{#{% endblock %}#}
+    <script src="{% static 'js/authPro/login.js' %}"></script>
+
+{% endblock %}
 

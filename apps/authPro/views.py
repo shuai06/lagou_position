@@ -13,7 +13,24 @@ from io import BytesIO
 from .models import User
 from django.db import connection
 
-# 类视图
+
+def valid_data(login_form):
+    # 验证: 图形验证码
+    graph_captcha = login_form.cleaned_data.get('graph_captcha')
+    server_graph_captcha = mcache.get_key('graph_captcha')
+    print('graph_captcha')
+    print(graph_captcha)
+    print(server_graph_captcha)
+    if not server_graph_captcha:
+        # return self.add_error("graph_captcha", "图形验证码已过期")
+        return False
+
+    if graph_captcha.lower() != server_graph_captcha.lower():
+        # return self.add_error("graph_captcha", "图形验证码不正确")
+        return False
+
+    return True
+
 # 登录
 def LoginView(request):
     if request.method == 'GET':
@@ -22,7 +39,14 @@ def LoginView(request):
     if request.method == 'POST':
         login_form = LoginForm(request.POST)
         message = "请检查填写的内容！"
+        # 验证: 图形验证码
+        # graph_valid = valid_data(login_form)
         if login_form.is_valid():
+            # graph_captcha = login_form.cleaned_data.get('graph_captcha')
+            # server_graph_captcha = mcache.get_key('graph_captcha')
+            # print("graph_captcha:   **************")
+            # print(graph_captcha)
+            # print(server_graph_captcha)
             username = request.POST.get('username')
             password = request.POST.get('password')
             hash_psd = hash_code(password)
@@ -38,6 +62,8 @@ def LoginView(request):
                     request.session['is_login'] = True
                     request.session['user_id'] = db_user_tuple[0]
                     request.session['user_name'] = db_user_tuple[1]
+                    request.session['user_email'] = db_user_tuple[3]
+                    request.session['user_jdate'] = str(db_user_tuple[4]).split(".")[0]
                     # request.session['user_avatar'] = user.avatar
 
                     next_url = request.GET.get("next", '')
@@ -99,9 +125,8 @@ def register_view(request):
                 new_user.email = email
                 new_user.save()
                 return redirect('/auth/login/')  # 自动跳转到登录页面
-    register_form = RegisterForm()
+    # register_form = RegisterForm()
     return render(request, 'authPro/register.html', locals())
-
 
 
 # 图形验证码
@@ -143,3 +168,25 @@ def hash_code(s, salt='mysite'):# 加点盐
 # 关于我
 def aboutme_view(request):
     return render(request, "authPro/aboutme.html")
+
+
+# 修改密码
+def updatepsd_view(request):
+    new_psd = request.POST.get('newpsd')
+    psd = hash_code(new_psd)
+    try:
+        User.objects.filter(id=request.session.get('user_id')).update(password=psd)
+    except Exception as e:
+        print(e)
+    else:
+        print("修改密码成功!")
+
+
+    return HttpResponse("success")
+
+
+
+
+
+
+

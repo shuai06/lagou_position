@@ -1,8 +1,7 @@
 $(document).ready(function () {
 
-    // 这种做法不能实际生效
-    // $(".navbar-nav .haha").click(function (e) {
-    //     // e.preventDefault();
+    // // 这种做法不能实际生效
+    // $(".navbar-nav .haha").hover(function (e) {
     //     $(".navbar-nav .haha.active").removeClass("active");
     //     $(this).addClass("active");
     // });

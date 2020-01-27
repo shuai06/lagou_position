@@ -374,15 +374,52 @@ function changeMapStyle(style){
 
 // js2wordcloud 生成词云
 var wc = new Js2WordCloud(document.getElementById('wordCloudImg'));
+var wc_list = [];    // 字段数量的数组
 wc.setOption({
     tooltip: {
         show: true
     },
-    list: [['谈笑风生', 8], ['弹性工作', 8], ['六险一金', 7], ['双休', 7], ['年薪百万', 6], ['大牛带飞', 6],['免费水果',10], ['下午茶',5],['免费体检',6],['无限调休',6]],
+    list: [
+    	// ['谈笑风生', 8], ['弹性工作', 8], ['六险一金', 7], ['双休', 7], ['年薪百万', 6], ['大牛带飞', 6],['免费水果',10], ['下午茶',5],['免费体检',6],['无限调休',6]
+		['暂无数据',100],
+	],
     color: '#15a4fa',
 	  "backgroundColor": '#082054', // the color of canvas
 });
 
+
+get_word_cloud();   // 调用
+function get_word_cloud() {
+	$.ajax({
+		url: '/get_word_cloud/',
+		type: 'POST',
+		success: function (data) {
+			console.log("词云获取数据成功");
+			var result = data.data;
+			// console.log(result['扁平管理']);
+			for (var val in result) {
+				wc_list.push([ val, result[val] ]);
+
+			}
+			console.log(wc_list);
+			// 设置
+			wc.setOption({
+				tooltip: {
+					show: true
+				},
+				list: wc_list,
+				color: '#15a4fa',
+				  "backgroundColor": '#082054', // the color of canvas
+			});
+
+		},
+		error: function () {
+			console.log("词云获取数据失败");
+		}
+
+	});
+
+}
 
 
 

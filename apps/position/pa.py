@@ -110,20 +110,13 @@ class PaPosition(object):
             cursor = conn.cursor()
 
             j = 0
+            # 写入数据
             for i in all_data:
-                # # 先判断数据表原来有没有数据
-                # result = Position.objects.filter()
-                # if result.exists():
-                #     print("QuerySet has Data")   # 清空原来数据
-                #     Position.objects.all().delete()
-                # else:
-                #     print("QuerySet has no Data")  # 在执行下面的
-                #     # truncate
-
-                ln12 = ''.join(str(s) for s in i[12])
+                # 对公司福利进行处理   companyLabelList
+                company_fuli = ','.join(str(s) for s in i[12])
                 # insert into student values(id,name,age)
                 sql = """insert into position_position values(%d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s', '%s','%s', '%s')""" % (
-                j, i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10], i[11], ln12, i[13], i[14], i[15], i[16], i[17], self.user_id, 'none')
+                j, i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10], i[11], company_fuli, i[13], i[14], i[15], i[16], i[17], self.user_id, 0)
                 print(sql)
                 cursor.execute(sql)
 
@@ -132,7 +125,7 @@ class PaPosition(object):
             j += 1
 
         except Exception as e:
-            print('error')
+            print('数据入库 error')
             print(e)
             conn.rollback()
 

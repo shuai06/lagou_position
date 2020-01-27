@@ -78,7 +78,7 @@ def search(request):
             # 先判断数据表原来有没有数据
             result = Position.objects.filter(user_id=request.session.get('user_id'))
             if result.exists():
-                print("QuerySet has Data")  # 清空原来数据
+                print("用户id：" + str(request.session.get('user_id')) + " : QuerySet has Data, 先清除原来数据,再进行导入...")  # 清空用户原来数据
                 Position.objects.filter(user_id=request.session.get('user_id')).delete()
 
             url = " https://www.lagou.com/jobs/positionAjax.json?needAddtionalResult=false"
@@ -124,6 +124,7 @@ def search(request):
 # @login_required
 def analyze(request):
     username = request.session.get('user_name', '')
+    # 如果没有登录
     if not username:
         return redirect('/auth/login/')
     else:
@@ -151,7 +152,7 @@ def count_city(request):
                 city_dict[i['city']] = count
                 # print(i.value())
             all_data = Position.objects.filter(user_id=request.session.get('user_id'))
-            print(all_data)
+            # print(all_data)
             for j in all_data:
                 # print(j.city)
                 if j.city in city_dict.keys():  # 判断sql查出来的city, 是否在字典的key中
@@ -159,7 +160,7 @@ def count_city(request):
                     # 如果在，就更新数据
                     Position.objects.filter(id=j.id, user_id=request.session.get('user_id')).update(city_count=city_dict[j.city])
             # print(city_dict)
-            print("更新count_city完成!")
+            # print("更新count_city完成!")
         except Exception as e:
 
             return JsonResponse(failData)
@@ -210,6 +211,35 @@ def charWorkJy(request):
 
         # print(qResult)
         return HttpResponse(json.dumps({'data': j_dict}), content_type="application/json")
+
+
+# 词云
+def get_word_view(request):
+    if request.method == "POST":
+        fuli_dict = {}    # {'扁平管理': 21, '弹性工作': 22, '大厨定制三餐': 9, '就近租房补贴': 9}
+        try:
+            fuli_counts_fromsql = Position.objects.filter(user_id=request.session.get('user_id')).values()
+            for i in fuli_counts_fromsql:
+                split_fuli = (i['gsfl']).split(',')
+                if len(split_fuli) == 1 or len(split_fuli) == 0:
+                    continue
+                for single in split_fuli:
+                    if single in fuli_dict:
+                        count = fuli_dict[single]
+                    else:
+                        count = 0
+                    count = count + 1
+                    fuli_dict[single] = count
+                # print(i.value())
+            print(fuli_dict)
+            print(type(fuli_dict))
+            print("获取 公司福利完成!")
+        except Exception as e:
+            return HttpResponse("fail")
+        else:
+            return HttpResponse(json.dumps({'data': fuli_dict}), content_type="application/json")
+
+
 
 
 # 求职交流

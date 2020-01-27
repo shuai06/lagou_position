@@ -368,61 +368,62 @@ $("#closeList").on("click", function(){
 /***
 * 查询所有的职位信息列表
 * */
-getDataList();
-function getDataList(){
-    $.ajax({
-        url: "/get_pos/",   // 先用这个接口
-        type: "POST",
-        dataType: "json",
-        success: function (data) {
+// getDataList();
+// function getDataList(){
+$.ajax({
+    url: "/get_pos/",   // 先用这个接口
+    type: "POST",
+    dataType: "json",
+    success: function (data) {
 //        	console.log(data);
-            if (data) {
-            	// 填充table数据
-                var tableContents="   <thead>  <tr><th>职位</th><th>公司</th><th>城市</th><th>薪资</th><th>学历</th><th>经验</th> <th>详情</th></tr>  </thead><tbody >";
+        if (data) {
+            // 填充table数据
+            var tableContents="   <thead>  <tr><th>职位</th><th>公司</th><th>城市</th><th>薪资</th><th>学历</th><th>经验</th> <th>详情</th></tr>  </thead><tbody >";
 
-                for(var i = 0;i<data.length;i++){
-                    var item = data[i]['fields'];
+            for(var i = 0;i<data.length;i++){
+                var item = data[i]['fields'];
 
-                    tableContents+= "<tr>";
+                tableContents+= "<tr>";
 
-                    // if(item.ANJIANNAME == "" || item.ANJIANNAME == null)
-                    // 	{
-                    // 	nameNull = "暂无名称"
-                    // 	}else {
-                    // 		nameNull = item.ANJIANNAME;
-                    // 	}
-                            //  职位名称   zwname
-                            tableContents+="<td>"+item.zwname+"</td>";
+                // if(item.ANJIANNAME == "" || item.ANJIANNAME == null)
+                // 	{
+                // 	nameNull = "暂无名称"
+                // 	}else {
+                // 		nameNull = item.ANJIANNAME;
+                // 	}
+                        //  职位名称   zwname
+                        tableContents+="<td>"+item.zwname+"</td>";
 
-                            // 公司名称   name
-                            tableContents+="<td>"+item.name+"</td>";
-                            // city
-                            tableContents+="<td>"+item.city+"</td>";
-                            //money
-                            tableContents+="<td>"+item.money+"</td>";
-                            // xueli
-                            tableContents+="<td>"+item.xueli+"</td>";
-                            // gzjy
-                            tableContents+="<td>"+item.gzjy+"</td>";
-                            // 详情
-                            tableContents+="<td style='cursor: pointer'><a href='" + item.detail_link + "' target='_blank'>查看</a> </td>";
-                            tableContents += "</tr>";
+                        // 公司名称   name
+                        tableContents+="<td>"+item.name+"</td>";
+                        // city
+                        tableContents+="<td>"+item.city+"</td>";
+                        //money
+                        tableContents+="<td>"+item.money+"</td>";
+                        // xueli
+                        tableContents+="<td>"+item.xueli+"</td>";
+                        // gzjy
+                        tableContents+="<td>"+item.gzjy+"</td>";
+                        // 详情
+                        tableContents+="<td style='cursor: pointer'><a href='" + item.detail_link + "' target='_blank'>查看</a> </td>";
+                        tableContents += "</tr>";
 
-            }
-                tableContents += "</tbody>";
-            $("#theadAndTbody").html(tableContents);
         }
-        if(data.length ==0){
-                tableContents += "<tr> <td></td> <td></td><td></td><td>查询数据为空!</td>  <td></td> <td></td> <td></td> </tr>  </tbody>";
-                $("#theadAndTbody").html(tableContents);
-                }
-        slideShowWin(data.length);
-        },
-        error : function(){
-            console.log("首页职位列表ajax error");
-          }
-    });
-}
+            tableContents += "</tbody>";
+        $("#theadAndTbody").html(tableContents);
+    }
+    if(data.length ==0){
+            tableContents += "<tr> <td></td> <td></td><td></td><td>查询数据为空!</td>  <td></td> <td></td> <td></td> </tr>  </tbody>";
+            $("#theadAndTbody").html(tableContents);
+            }
+    slideShowWin(data.length);
+    },
+    error : function(){
+        console.log("首页职位列表ajax error");
+      }
+});
+
+// }
 // 职位列表结束
 
 

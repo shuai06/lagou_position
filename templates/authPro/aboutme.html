@@ -1,18 +1,49 @@
 {% extends 'base/base_top.html' %}
 
-{% block title %}  我的资料 {% endblock %}
+{% block title %}  我的资料 {%  endblock %}
 
 {% block link %}
-{#    <link rel="stylesheet" href="../../static/css/position.css">#}
- {% endblock %}
+{#    <link rel="stylesheet" href="{% static 'css/authPro/auth.css' %}">#}
+    <link rel="stylesheet" href="{% static 'css/authPro/about.css' %}">
+{%  endblock %}
 
 
 
 
 {% block content %}
+    <div class="container">
+        <div class="col-md-4 col-md-offset-4">
+{#          <form class='form-me' action="" οnsubmit="return disable_func()">#}
+          <div class="form-me">
+              <h2 class="text-center">欢迎用户： {{ request.session.user_name }} </h2>
 
-<h1>我的资料/修改</h1>
+              <div class="form-group">
+                <label for="id_username">用户名：</label>
+                <input type="text" name='username' class="form-control" id="id_username"  value="{{ request.session.user_name }}" readonly="true">
+              </div>
+              <div class="form-group">
+                <label for="id_email">邮箱：</label>
+                <input type="text" name='email' class="form-control" id="id_email"  value="{{ request.session.user_email }}" readonly="true">
+              </div>
+              <div class="form-group">
+                <label for="id_data">加入时间：</label>
+                <input type="text" name='jdate' class="form-control" id="id_data"  value="{{ request.session.user_jdate }}" readonly="true">
+              </div>
+              <div class="form-group">
+                <label for="id_password">新密码：</label>
+                <input type="password" name='password' class="form-control" id="id_password" placeholder="修改密码" >
+              </div>
+             <div class="form-group">
+                <label for="id_password_repeat">确认密码：</label>
+                <input type="password" name='password_repeat' class="form-control" id="id_password_repeat" placeholder="确认密码" >
+              </div>
 
+              <button class="btn btn-primary pull-left"><a href="{% url 'position:index' %}" style="color: #FFFFFF"> &lt;&lt;&nbsp;返回</a></button>
+              <button class="btn btn-primary pull-right" id="update_psd" type="submit">修改密码</button>
+
+          </div>
+        </div>
+    </div> <!-- /container -->
 {% endblock %}
 
 
@@ -22,5 +53,5 @@
 
 
 {% block script %}
-{#    <script src="../../static/js/position/position.js"></script>#}
+    <script src="{% static 'js/authPro/about.js' %}"></script>
 {% endblock %}
