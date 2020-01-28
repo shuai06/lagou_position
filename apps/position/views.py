@@ -42,28 +42,55 @@ def get_pos(request):
     if request.method == 'POST':
         positions = Position.objects.filter(user_id=request.session.get('user_id'))
         position_res = serializers.serialize('json', positions)  # 讲查询结果json序列化
-        print(position_res)
+        # print(position_res)
         return HttpResponse(position_res, content_type="application/json")   # 职位数据json
     else:
         # return JsonResponse({'data': 'error!'})
         pass
 
 
+# 筛选地图点,联动
+def select_points(request):
+    if request.method == 'POST':
+        parm = request.POST.get('params')
+        type_name = request.POST.get('typeName')
+
+        if type_name == "学历":
+            positions = Position.objects.filter(xueli=parm, user_id=request.session.get('user_id'))
+        elif type_name == "经验":
+            positions = Position.objects.filter(gzjy=parm, user_id=request.session.get('user_id'))
+        elif type_name == "城市":
+            positions = Position.objects.filter(city=parm, user_id=request.session.get('user_id'))
+        elif type_name == "领域":
+            positions = Position.objects.filter(jyfanwei=parm, user_id=request.session.get('user_id'))
+        elif type_name == "规模":
+            positions = Position.objects.filter(size=parm, user_id=request.session.get('user_id'))
+
+        position_res = serializers.serialize('json', positions)  # 讲查询结果json序列化
+        print(position_res)
+        return HttpResponse(position_res, content_type="application/json")   # 职位数据json
+    else:
+        pass
+
+
 # 职位列表的筛选
-def get_xueli(request):
+def get_data_list(request):
     if request.method == 'POST':
         parm = request.POST.get('parm')
         typeName = request.POST.get('typeName')
 
         if typeName == "学历":
-            positions = Position.objects.filter(xueli=parm)
+            positions = Position.objects.filter(xueli=parm, user_id=request.session.get('user_id'))
         elif typeName == "经验":
-            positions = Position.objects.filter(gzjy=parm)
+            positions = Position.objects.filter(gzjy=parm, user_id=request.session.get('user_id'))
         elif typeName == "城市":
             positions = Position.objects.filter(city=parm, user_id=request.session.get('user_id'))
+        elif typeName == "领域":
+            positions = Position.objects.filter(jyfanwei=parm, user_id=request.session.get('user_id'))
+        elif typeName == "规模":
+            positions = Position.objects.filter(size=parm, user_id=request.session.get('user_id'))
 
         position_res = serializers.serialize('json', positions)  # 将查询结果json序列化
-        print(position_res)
         return HttpResponse(position_res, content_type="application/json")   # 职位数据json
 
 
@@ -174,14 +201,12 @@ def other(request):
     return render(request, 'position/other.html')
 
 
-
-
 # 统计图 char city
 def charCity(request):
     if request.method == "POST":
-        qResult = Position.objects.filter(user_id=request.session.get('user_id')).values("city", "city_count").distinct().order_by('-city_count')[0:12]  # 从大到小排序
+        qResult = Position.objects.filter(user_id=request.session.get('user_id')).values("city", "city_count").distinct().order_by('-city_count')  # 去重,并且从大到小排序
         cityList = list(qResult)   # 直接把QuerySet转为List
-        # print(cityList)
+        # print(len(cityList))
         return HttpResponse(json.dumps({'data': cityList}), content_type="application/json")
 
 
@@ -190,7 +215,7 @@ def charCity(request):
 def charXueli(request):
     if request.method == "POST":
         cursor = connection.cursor()
-        sql = "select xueli,count(*) as x_count from position_position where user_id="+str(request.session.get('user_id'))+ " group by xueli"
+        sql = "select xueli,count(*) as x_count from position_position where user_id="+str(request.session.get('user_id')) + " group by xueli"
         cursor.execute(sql)
         x_dict = dict(list(cursor.fetchall()))
         # print(x_dict)
@@ -203,13 +228,38 @@ def charXueli(request):
 def charWorkJy(request):
     if request.method == "POST":
         cursor = connection.cursor()
-        sql = "select gzjy, count(*) as j_count from position_position where user_id="+str(request.session.get('user_id'))+" group by gzjy;"
+        sql = "select gzjy, count(*) as j_count from position_position where user_id="+str(request.session.get('user_id')) + " group by gzjy;"
         # print(sql)
         cursor.execute(sql)
         j_dict = dict(list(cursor.fetchall()))
         # print(j_dict)
 
         # print(qResult)
+        return HttpResponse(json.dumps({'data': j_dict}), content_type="application/json")
+
+# 统计图 pie  行业领域
+def charWorkIndustry(request):
+    if request.method == "POST":
+        cursor = connection.cursor()
+        sql = "select jyfanwei, count(*) as j_count from position_position where user_id="+str(request.session.get('user_id')) + " group by jyfanwei;"
+        # print(sql)
+        cursor.execute(sql)
+        j_dict = dict(list(cursor.fetchall()))
+        # print(j_dict)
+
+        # print(qResult)
+        return HttpResponse(json.dumps({'data': j_dict}), content_type="application/json")
+
+
+# 统计图 pie  行业领域
+def charWorkSize(request):
+    if request.method == "POST":
+        cursor = connection.cursor()
+        sql = "select size, count(*) as j_count from position_position where user_id="+str(request.session.get('user_id')) + " group by size;"
+        # print(sql)
+        cursor.execute(sql)
+        j_dict = dict(list(cursor.fetchall()))
+        # print(j_dict)
         return HttpResponse(json.dumps({'data': j_dict}), content_type="application/json")
 
 
@@ -220,6 +270,8 @@ def get_word_view(request):
         try:
             fuli_counts_fromsql = Position.objects.filter(user_id=request.session.get('user_id')).values()
             for i in fuli_counts_fromsql:
+                if i['gsfl'] is None:
+                    continue
                 split_fuli = (i['gsfl']).split(',')
                 if len(split_fuli) == 1 or len(split_fuli) == 0:
                     continue
@@ -231,9 +283,8 @@ def get_word_view(request):
                     count = count + 1
                     fuli_dict[single] = count
                 # print(i.value())
-            print(fuli_dict)
-            print(type(fuli_dict))
-            print("获取 公司福利完成!")
+            # print(fuli_dict)
+            # print("获取 公司福利完成!")
         except Exception as e:
             return HttpResponse("fail")
         else:

@@ -118,7 +118,7 @@ function addMarker(point,gsname,zwname,money,xueli,jy, detail){
 
 
 function flush_data(data) {
-    for(var i=0; i<data.length-1; i++){
+    for(var i=0; i<data.length; i++){
         var res = bd_encrypt(data[i]['fields']['lon'],data[i]['fields']['lat']);
         var lo = res.bd_lng;
         var la = res.bd_lat;
@@ -359,8 +359,8 @@ $("#upAndD").on("click",function () {
 //关闭按钮
 $("#closeList").on("click", function(){
      $(".showCaseInfo").css("height","0");
-//    	 $(".showCaseInfo").css("transition","none");
-//    	 $(".showCaseInfo").slideDown();
+   	//  $(".showCaseInfo").css("transition","none");
+   	//  $(".showCaseInfo").slideDown();
 });
 
 
@@ -486,11 +486,6 @@ function clearAll() {
 
 
 });
-
-
-
-
-
 
 
 

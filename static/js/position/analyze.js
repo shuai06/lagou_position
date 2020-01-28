@@ -43,7 +43,7 @@ $(document).ready(function(){
 		]
 	};
 	pieChartXueli.setOption(optionXueli);
-
+	// 学历ajax数据填充
 	getChartXueli();
 	function getChartXueli(){
 		pieChartXueli.showLoading();
@@ -110,13 +110,14 @@ $(document).ready(function(){
         $("#upAndD").attr("title","展开").css("transform","rotateZ(0)");
         isShowMore=true;
 	}
-	getDataListXueliandJY( xueliName, "学历");
+	getDataList(xueliName, "学历");
+	selectPoints(xueliName, "学历");    // 联动
 	});
 
 
     // 城市 char
 	var barChartsCity = echarts.init(document.getElementById('city'));
-	optionCity = {
+	var optionCity = {
 		tooltip: {},
 		legend: {
 		},
@@ -146,6 +147,32 @@ $(document).ready(function(){
                         }
 
 		},
+		dataZoom : [
+	    	{
+                type: 'slider',
+                show: true,
+                start: 1,
+                end: 50,
+                handleSize: 8
+            },
+            {
+                type: 'inside',
+                start: 50,
+                end: 100
+            },
+            // {
+            //     type: 'slider',
+            //     show: true,
+            //     yAxisIndex: 0,
+            //     filterMode: 'empty',
+            //     width: 12,
+            //     height: '70%',
+            //     handleSize: 8,
+            //     showDataShadow: false,
+            //     left: '93%'
+            // }
+	    ],
+
 		series: [{
 			data: [], //ajax
 			type: 'bar'
@@ -170,10 +197,7 @@ $(document).ready(function(){
 				for(var i in dataStage) {
 					city_list.push(dataStage[i].city);
 					city_count_list.push(dataStage[i].city_count);
-
 				}
-				// console.log(city_list);
-				// console.log(city_count_list);
 				// 填充数据
 				barChartsCity.setOption({
 							xAxis: {
@@ -208,12 +232,13 @@ $(document).ready(function(){
 
 	// 城市pie的点击事件
 	barChartsCity.on('click', function(params){
-	var xueliName = params.name;
+	var cityName = params.name;
 	if(isShowMore==false){
         $("#upAndD").attr("title","展开").css("transform","rotateZ(0)");
         isShowMore=true;
 	}
-	getDataListXueliandJY( xueliName, "城市");
+	getDataList(cityName, "城市");
+	selectPoints(cityName, "城市");
 	});
 
 	// 工作经验  char
@@ -331,22 +356,212 @@ $(document).ready(function(){
 
 	// 经验pie的点击事件
 	pieChartJy.on('click', function(params){
-	var xueliName = params.name;
+	var yjName = params.name;
 	if(isShowMore==false){
         $("#upAndD").attr("title","展开").css("transform","rotateZ(0)");
         isShowMore=true;
 	}
-	getDataListXueliandJY( xueliName, "经验");
+	getDataList(yjName, "经验");
+	selectPoints(yjName, "经验");
+	});
+
+    // 公司领域
+	var pieCharIndustry = echarts.init(document.getElementById('id_industry'));
+	var optionIndustry = {
+		title: {
+			text: '行业领域',
+			// subtext: '纯属虚构',
+			left: 'center'
+		},
+		// grid:{
+		// 	left:'10%',
+		// 	right:'20%',
+		// 	bottom:'1%',
+		// 	containLabel:true
+		// },
+		tooltip: {
+			trigger: 'item',
+			formatter: '{a} <br/>{b} : {c} ({d}%)'
+		},
+		series: [
+			{
+				name: '领域',
+				type: 'pie',
+				radius: [30, 110],
+				center: ['50%', '50%'],
+				roseType: 'area',
+				data: [
+					{value: 100, name: '暂无数据'},
+					// {value: 10, name: 'rose2'},
+					// {value: 10, name: 'rose3'},
+					// {value: 10, name: 'rose4'},
+					// {value: 10, name: 'rose5'},
+					// {value: 10, name: 'rose6'},
+					// {value: 10, name: 'rose7'},
+					// {value: 10, name: 'rose8'}
+				]
+			}
+		]
+};
+	pieCharIndustry.setOption(optionIndustry);
+	// ajax填充数据
+	getChartIndustry();
+	function getChartIndustry(){
+		pieCharIndustry.showLoading();
+		var jsondata = [];
+		$.ajax({
+			url:'/charWorkIndustry/',
+			type:'POST',
+			success:function (data) {
+				pieCharIndustry.hideLoading();
+				var dataStage = data.data;
+				// console.log(dataStage);
+				for (let i in dataStage) {
+					let single = {"value":dataStage[i], "name":i}
+					jsondata.push(single);
+				}
+
+				// 填充数据
+				pieCharIndustry.setOption({
+					series: [
+						{
+							name: '领域',
+							type: 'pie',
+							radius: [30, 100],
+							center: ['50%', '50%'],
+							roseType: 'area',
+							data:   jsondata,// 动态填充
+						}
+					]
+
+				});
+
+				// console.log("获取char city success");
+			},
+			error:function () {
+				console.log("获取char city 失败！");
+			}
+		})
+
+	}
+
+	// 公司领域 pie的点击事件
+	pieCharIndustry.on('click', function (params) {
+		var industry_name = params.name;
+		if(isShowMore==false){
+			$("#upAndD").attr("title","展开").css("transform","rotateZ(0)");
+			isShowMore=true;
+		}
+		getDataList(industry_name, "领域");
+		selectPoints(industry_name, "领域");
+
+	});
+
+	// 公司规模
+	var barCharSize = echarts.init(document.getElementById("id_size"));
+	var optionSize = {
+		tooltip: {},
+		legend: {
+		},
+		xAxis: {
+			type: 'category',
+			axisLabel : {
+				textStyle: {
+					color: '#fff'
+				          },
+				// rotate:30,
+				interval: 0,
+			   // formatter:function(value)
+			   // {
+				//    return value.split("").join("\n");
+			   // },
+			},
+
+			data: [],  //ajax
+		},
+		yAxis: {
+			type: 'value',
+			axisLabel : {
+				formatter: '{value}',
+				textStyle: {
+					color: '#fff'
+				          }
+                        }
+
+		},
+		series: [{
+			data: [], //ajax
+			type: 'bar'
+		}],
+
+	};
+	barCharSize.setOption(optionSize);
+	getChartSize();
+	function getChartSize(){
+		var size_list = [];
+		var size_count_list = [];
+
+		barCharSize.showLoading();
+		$.ajax({
+			url:'/charWorkSize/',
+			type:'POST',
+			success:function (data) {
+				barCharSize.hideLoading();  //加载数据完成后的loading动画
+				let dataStage = data.data;   //这里是我们后台返给我的数据
+				// console.log(dataStage);
+				for(let i in dataStage) {
+					size_list.push(i);
+					size_count_list.push(dataStage[i]);
+
+				}
+				// 填充数据
+				barCharSize.setOption({
+							xAxis: {
+								type: 'category',
+								axisLabel : {
+										textStyle: {
+											color: '#fff'
+												  },
+										rotate:30,
+										interval: 0,
+
+											},
+								data: size_list,  //ajax
+								},
+							series: [{
+								data: size_count_list, //ajax
+								type: 'bar'
+								}],
+				});
+
+			},
+			error:function () {
+				console.log("获取char city 失败！");
+			}
+		})
+	}
+
+	// 公司规模 pie的点击事件
+	barCharSize.on('click', function(params){
+	var sizeName = params.name;
+	if(isShowMore==false){
+        $("#upAndD").attr("title","展开").css("transform","rotateZ(0)");
+        isShowMore=true;
+	}
+	getDataList(sizeName, "规模");
+	selectPoints(sizeName, "规模");
 	});
 
 
 
 
-//全局设置Echrts - 根据窗口的大小变动图表
+//全局设置Echarts - 根据窗口的大小变动图表
 window.onresize = function(){
     barChartsCity.resize();
     pieChartJy.resize();
     pieChartXueli.resize();
+    pieCharIndustry.resize();
+    barCharSize.resize();
     wc.resize();
 };
 
@@ -356,20 +571,20 @@ window.onresize = function(){
 var map = new BMap.Map("mapholder");
 var point = new BMap.Point(108.000, 39.915);
 map.centerAndZoom(point, 5);
-// map.enableScrollWheelZoom(true);
+map.enableScrollWheelZoom(true);
 map.enableInertialDragging();
 map.enableContinuousZoom();
 
 
 // 地图主题  midnight   googlelite     pink     grayscale  bluish   light  dark  normal
-changeMapStyle('normal');
-function changeMapStyle(style){
-	var mapStyle ={
-		// features: ["road","building","water","land"],//隐藏地图上的"poi",
-		style : style,
-	};
-	map.setMapStyle(mapStyle);
-}
+// changeMapStyle('normal');
+// function changeMapStyle(style){
+// 	var mapStyle ={
+// 		// features: ["road","building","water","land"],//隐藏地图上的"poi",
+// 		style : style,
+// 	};
+// 	map.setMapStyle(mapStyle);
+// }
 
 
 // js2wordcloud 生成词云
@@ -394,14 +609,13 @@ function get_word_cloud() {
 		url: '/get_word_cloud/',
 		type: 'POST',
 		success: function (data) {
-			console.log("词云获取数据成功");
+			// console.log("词云获取数据成功");
 			var result = data.data;
 			// console.log(result['扁平管理']);
 			for (var val in result) {
 				wc_list.push([ val, result[val] ]);
 
 			}
-			console.log(wc_list);
 			// 设置
 			wc.setOption({
 				tooltip: {
@@ -420,11 +634,6 @@ function get_word_cloud() {
 	});
 
 }
-
-
-
-
-
 
 
 
@@ -460,9 +669,9 @@ $("#closeList").on("click", function(){
 });
 
 
-function getDataListXueliandJY(parm, typeName){
+function getDataList(parm, typeName){
     $.ajax({
-        url: "/get_xueli/",   //
+        url: "/get_data_list/",   //
         type: "POST",
         dataType: "json",
 		data:{
@@ -567,17 +776,80 @@ function count_city() {
 
 
 
+/***********
+* 地图点的联动
+* */
+
+let markersList = [];
+let markersArray = [];
+
+// 筛选地图坐标点
+function selectPoints(params, typeName) {
+	    $.ajax({
+        url: "/select_points/",
+        type:"POST",
+		data:{
+        	'params':params,
+        	'typeName':typeName,
+        },
+        success: function(data) {
+            data2 = data;
+            flush_data(data2)
+        }
+
+    });
+}
+
+// 填入数据
+function flush_data(data) {
+	markersList = [];
+	markersArray = [];
+	map.clearOverlays();
+	for (var i = 0; i < data.length; i++) {
+		var res = bd_encrypt(data[i]['fields']['lon'], data[i]['fields']['lat']);
+		var lo = res.bd_lng;
+		var la = res.bd_lat;
+		var gsname = data[i]['fields']['name'];
+		var zwname = data[i]['fields']['zwname'];
+		var money = data[i]['fields']['money'];
+		var xueli = data[i]['fields']['xueli'];
+		var jy = data[i]['fields']['gzjy'];
+		var point = new BMap.Point(lo, la);
+		var detail = data[i]['fields']['detail_link'];
+		markersList.push(point);  // 将点坐标push到点数组中
+		addMarker(point, gsname, zwname, money, xueli, jy, detail);
+	}
+	map.centerAndZoom(new BMap.Point(markersList[0]['lng'], markersList[0]['lat']), 6);  // 缩放
+	console.log(markersList);
+
+}
 
 
+// 编写自定义函数,创建标注
+function addMarker(point,gsname,zwname,money,xueli,jy, detail){
+    var marker = new BMap.Marker(point);
+    // map.removeOverlay(marker);  // 清空原来的
 
+    map.addOverlay(marker);
+    markersArray.push(marker);
 
+    // gname = reverseAddress(point);
 
+    var content = "<table>";
+    content = content + "<tr><td> 公司：" +gsname+ "</td></tr>";
+    content = content + "<tr><td> 职位：" +zwname+"</td></tr>";
+    content = content + "<tr><td> 薪资：" +money+"</td></tr>";
+    content = content + "<tr><td> 学历：" +xueli+"</td></tr>";
+    content = content + "<tr><td> 经验：" +jy+"</td></tr>";
+    content = content + "<tr><td> 详情：<a href='" + detail + "' target='_blank'>查看</a> </td></tr>";
+    content += "</table>";
+    var infowindow = new BMap.InfoWindow(content);
+            marker.addEventListener("click",function(){
+                this.openInfoWindow(infowindow);
+            });
 
-
-
-
-
-
+    console.log("OK");
+}
 
 
 

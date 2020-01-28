@@ -91,7 +91,7 @@ class PaPosition(object):
             job_info.append(i['positionAdvantage'])           # 职位诱惑      "年底多薪 技术大牛 学术氛围好 成长迅速"
             job_info.append(i['industryField'])               # 领域
             job_info.append(i['firstType'])                   # "开发|测试|运维类"
-            job_info.append(i['companyLabelList'])            # ["弹性工作", "领导好", "扁平管理", "五险一金"]
+            job_info.append(i['companyLabelList'])            # 公司标签 ["弹性工作", "领导好", "扁平管理", "五险一金"]
             job_info.append(i['secondType'])                  # "人工智能"
             job_info.append(i['city'])                        # 城市
             job_info.append(i['latitude'])                    # 纬度

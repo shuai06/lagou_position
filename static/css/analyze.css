@@ -231,7 +231,7 @@ html,body{
     margin-left: -105px;
 }
 .showMain .admRegMonthCase:before{
-    content:"薪资水平";
+    content:"薪资统计";
     width: 240px;
     margin-left: -120px;
 }
@@ -241,10 +241,18 @@ html,body{
     margin-left: -90px;
 }
 .showMain .weekCaseRate:before{
-    content:"其他统计";
+    content:"行业统计";
     width: 240px;
     margin-left: -120px;
 }
+
+.showMain .caseWordCloud:before{
+    content:"公司标签";
+    width: 240px;
+    margin-left: -120px;
+}
+
+
 
 #measurepanel{
     display: none;
