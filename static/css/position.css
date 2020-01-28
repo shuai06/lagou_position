@@ -195,25 +195,6 @@ body{
     cursor: pointer;
 }
 
-.showCaseInfo .row .status span{
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    background-color: #fedf0e;
-    vertical-align: text-top;
-}
-.showCaseInfo .row .status:nth-child(2) span{
-    background-color: #fe504d;
-}
-.showCaseInfo .row .status:nth-child(3) span{
-    background-color: #4681f4;
-}
-.showCaseInfo .row .status:nth-child(4) span{
-    background-color: #435075;
-}
-.showCaseInfo .row .status b{
-    font-weight: 500;
-}
 
 .table thead tr{
     height: 47px;
@@ -239,27 +220,24 @@ body{
     font-weight: bold;
     border:0;
 }
+/*偶数行*/
 .table tbody tr:nth-child(even){
 /*     background-color: #141367; */
-    background-color: rgb(11,74,156)
+    background-color: rgb(11,74,156);
 }
+
+/*奇数行*/
+.table tbody tr:nth-child(odd){
+     background-color: #062c6e;
+}
+
+/**/
+
 .table tbody tr td:last-child{
     color: #7ea2f6;
 
 }
-#xxx{
-	background-color:rgb(4,92,97);
-}
 
-.detail_title_name {
-    height: 45px;
-    line-height: 45px;
-    font-size: 15px;
-    letter-spacing: 2px;
-    background: #384260;
-    color: #fff;
-    text-align: center;
-}
 
 .caseList{
 /* 	background-color: rgb(2,22,84); */
@@ -271,24 +249,9 @@ body{
     top: 0;
     min-width:200px;
 
-    background-image: -webkit-radial-gradient(800px 800px at 400px 250px, rgb(2,22,84),rgb(11,74,156));
-  	background-image: radial-gradient(800px 800px at 400px 150px, rgb(2,22,84),rgb(11,74,156));
-
-
+    /*background-image: -webkit-radial-gradient(800px 800px at 400px 250px, rgb(2,22,84),rgb(11,74,156));*/
+  	/*background-image: radial-gradient(800px 800px at 400px 150px, rgb(2,22,84),rgb(11,74,156));*/
 }
-
-
-#xx td{
-	color:white;
-	background-color:rgb(2,22,84);
-	font-weight: 400;
-}
-
-/* .showCaseInfoMain  */
-
-
-
-
 
 
 .showCaseInfoMain {
@@ -296,9 +259,69 @@ body{
     height: calc(100% - 2px);
 }
 
-/* 职位信息列表结束 */
+.staTuMini i{
+    color: #91a1b6;
+    background-color: #eee;
+    padding: 0 20px;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+}
 
 
 
+/*test*/
+/*统计图*/
+.staTu{
+    width: 89.5%;
+    position: absolute;
+    left: 201px;bottom: 0;
+    z-index: 1000;
+
+}
+.staTu .staTuMini i{
+    color: #91a1b6;
+    background-color: #eee;
+    padding: 0 20px;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+}
+.alSta{
+    padding-left: 0;
+}
+.alSta:last-child{
+    padding-right: 0;
+}
+.alStaCon{
+    background-color: rgb(8, 36, 93);
+    border-radius: 6px;
+    width: 100%;height: 290px;
+    padding: 10px 20px;
+}
 
 
+/*// */
+.table thead tr{
+    height: 47px;
+    background-color:  rgb(11,74,156);
+}
+
+.clear{
+    clear: both;
+}
+
+#id_span{
+    display:block;
+    color:#d3d3d3;
+    margin-top:5px;
+    font-size:18px;
+    text-align:center;
+    letter-spacing:5px;
+}
+
+#id_list_con{
+    min-width:400px;
+    /*height: calc(100% - 30px);*/
+    height: calc(100% - 3px);
+    overflow: auto;
+    background-color: rgb(8, 36, 93);
+}

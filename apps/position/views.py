@@ -2,6 +2,7 @@ import json
 import time
 
 import jieba
+from django.db.models import Q
 from wordcloud import WordCloud
 import PIL.Image as image
 import numpy as np
@@ -49,6 +50,19 @@ def get_pos(request):
         pass
 
 
+# 首页 职位列表筛选 like
+def search_key_view(request):
+    if request.method == 'POST':
+        parm = request.POST.get('params')
+        positions = Position.objects.filter(user_id=request.session.get('user_id')).filter(Q(name__icontains=parm) | Q(size__icontains=parm) | Q(zwname__icontains=parm) | Q(xueli__icontains=parm) | Q(gzjy__icontains=parm) | Q(city__icontains=parm))
+        position_res = serializers.serialize('json', positions)  # 讲查询结果json序列化
+        # print(position_res)
+        return HttpResponse(position_res, content_type="application/json")   # 职位数据json
+    else:
+        # return JsonResponse({'data': 'error!'})
+        pass
+
+
 # 筛选地图点,联动
 def select_points(request):
     if request.method == 'POST':
@@ -73,7 +87,7 @@ def select_points(request):
         pass
 
 
-# 职位列表的筛选
+# 分析页面职位列表的筛选
 def get_data_list(request):
     if request.method == 'POST':
         parm = request.POST.get('parm')

@@ -796,7 +796,6 @@ function selectPoints(params, typeName) {
             data2 = data;
             flush_data(data2)
         }
-
     });
 }
 

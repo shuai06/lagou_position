@@ -205,19 +205,13 @@ $("#btnPa").click(function (){
                        closeWin();
                        $("#zw_name").val("");
                        alert("数据爬取完成,点击展示数据查看");
-
+                       window.location.reload();
                    },
                    error: () => {
                        console.log("Error");
                    }
-
             });
-
-
         }
-
-
-
 });
 
 
@@ -305,64 +299,11 @@ function setGradient() {
 
 
 
-
-
-
 /*
 * 职位列表
 *
 *
 * */
-
-// // 关闭首页的案件列表
-// function closeSlideWin(){
-// 	$(".showCaseInfo").css("transition","0.5s");
-// 	$(".showCaseInfo").css("height","0");
-// };
-//
-
-//从不出现到滑上来
-function slideShowWin(listLength){
-	$(".showCaseInfo").css("transition","0.5s");
-	if(listLength<=10){
-		$(".showCaseInfo").css("height","auto");
-		$("#upAndD").hide();
-	}
-	else{
-		$(".showCaseInfo").css("height","300px");
-		$("#upAndD").show();
-	}
-
-
-}
-
-
-//箭头按钮，拉大拉小
-//列表信息的展开
-var isShowMore=true;
-$("#upAndD").on("click",function () {
-    $(".showCaseInfo").css("transition","0.5s");
-    if(isShowMore){
-        $("#upAndD").attr("title","收起").css("transform","rotateZ(180deg)");
-        $(".showCaseInfo").css("height","700px");
-        isShowMore=false;
-    }else{
-        $("#upAndD").attr("title","展开").css("transform","rotateZ(0)");
-        $(".showCaseInfo").css("height","300px");
-        isShowMore=true;
-    }
-
-});
-
-
-
-//关闭按钮
-$("#closeList").on("click", function(){
-     $(".showCaseInfo").css("height","0");
-   	//  $(".showCaseInfo").css("transition","none");
-   	//  $(".showCaseInfo").slideDown();
-});
-
 
 
 /***
@@ -407,7 +348,6 @@ $.ajax({
                         // 详情
                         tableContents+="<td style='cursor: pointer'><a href='" + item.detail_link + "' target='_blank'>查看</a> </td>";
                         tableContents += "</tr>";
-
         }
             tableContents += "</tbody>";
         $("#theadAndTbody").html(tableContents);
@@ -416,7 +356,7 @@ $.ajax({
             tableContents += "<tr> <td></td> <td></td><td></td><td>查询数据为空!</td>  <td></td> <td></td> <td></td> </tr>  </tbody>";
             $("#theadAndTbody").html(tableContents);
             }
-    slideShowWin(data.length);
+    // slideShowWin(data.length);
     },
     error : function(){
         console.log("首页职位列表ajax error");
@@ -461,6 +401,92 @@ function clearAll() {
 }
 
 
+
+ $(".staTuMini i").parents(".staTu").find(".alSta").stop().slideToggle();
+
+
+
+
+
+
+// 职位列表 staTuMini展开/隐藏
+$(".staTuMini i").on("click",function(){
+    $(this).parents(".staTu").find(".alSta").stop().slideToggle();
+    if($(this).hasClass("fa-chevron-down")){
+        $(this).attr("class","fa fa-2x fa-chevron-up");
+    }else{
+        $(this).attr("class","fa fa-2x fa-chevron-down");
+    }
+});
+
+
+//回车搜索职位
+$('#searchName').bind('keydown', function (event) {
+    var event = window.event || arguments.callee.caller.arguments[0];
+    if (event.keyCode == 13){
+        key_word = $('#searchName').val();
+        searchData(key_word);
+    }
+});
+
+function searchData(key_word) {
+    $.ajax({
+        url: "/search_key/",   // 先用这个接口
+        type: "POST",
+        dataType: "json",
+        data:{
+            "params":key_word,
+        },
+        success: function (data) {
+    //        	console.log(data);
+            if (data) {
+                // 填充table数据
+                var tableContents="   <thead>  <tr><th>职位</th><th>公司</th><th>城市</th><th>薪资</th><th>学历</th><th>经验</th> <th>详情</th></tr>  </thead><tbody >";
+
+                for(var i = 0;i<data.length;i++){
+                    var item = data[i]['fields'];
+
+                    tableContents+= "<tr>";
+
+                    // if(item.ANJIANNAME == "" || item.ANJIANNAME == null)
+                    // 	{
+                    // 	nameNull = "暂无名称"
+                    // 	}else {
+                    // 		nameNull = item.ANJIANNAME;
+                    // 	}
+                            //  职位名称   zwname
+                            tableContents+="<td>"+item.zwname+"</td>";
+
+                            // 公司名称   name
+                            tableContents+="<td>"+item.name+"</td>";
+                            // city
+                            tableContents+="<td>"+item.city+"</td>";
+                            //money
+                            tableContents+="<td>"+item.money+"</td>";
+                            // xueli
+                            tableContents+="<td>"+item.xueli+"</td>";
+                            // gzjy
+                            tableContents+="<td>"+item.gzjy+"</td>";
+                            // 详情
+                            tableContents+="<td style='cursor: pointer'><a href='" + item.detail_link + "' target='_blank'>查看</a> </td>";
+                            tableContents += "</tr>";
+            }
+                tableContents += "</tbody>";
+            $("#theadAndTbody").html(tableContents);
+        }
+        if(data.length ==0){
+                tableContents += "<tr> <td></td> <td></td><td></td><td>查询数据为空!</td>  <td></td> <td></td> <td></td> </tr>  </tbody>";
+                $("#theadAndTbody").html(tableContents);
+                }
+        // slideShowWin(data.length);
+        },
+        error : function(){
+            console.log("首页职位列表ajax error");
+          }
+});
+
+
+}
 
 
 

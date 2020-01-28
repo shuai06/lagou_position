@@ -6,9 +6,10 @@
     <link rel="shortcut icon " type="images/x-icon" href="../../static/images/ico.ico">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
     <link href="http://api.map.baidu.com/library/IndoorMap/1.0/src/indoor.min.css?v=1.0.1 " rel="stylesheet" type="text/css">
-    <link href="{% static 'css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+{#    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">#}
+    <link href="{% static 'css/base/bootstrap-3.3.7/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'font-awesome-4.7.0/css/font-awesome.css' %}" rel="stylesheet" type="text/css">
 
     <link rel="stylesheet" href="{% static 'css/base/base_top.css' %}">
     {% block link %}
@@ -28,7 +29,7 @@
         <div class="container-fluid">
 {#            logo#}
             <div class="navbar-header">
-              <a class="navbar-brand" href="#">智慧职位展示系统</a>
+              <a class="navbar-brand" href="#">智慧职位搜索展示系统</a>
             </div>
 {#          navbar-right   导航#}
             <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-8">
@@ -76,24 +77,22 @@
 {% endblock %}
 
 
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
-<script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-{#下面这个是基于jq的，所以要写在他的后面#}
-<script src="{% static 'js/base/setup.js' %}"></script>
-<script src="{% static 'js/base/message.js' %}"></script>
-<script src="{% static 'js/base/common.js' %}"></script>
 
-{#<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>#}
-<script src="{% static 'js/base/jquery-3.4.1.js' %}"></script>
+
+
+
+<script src="{% static 'js/base/bootstrap-3.3.7/bootstrap.js' %}"></script>
+<script src="{% static 'js/base/jquery-3.3.1.js' %}"></script>
+<script src="{% static 'js/position/echarts.js' %}"></script>
+<script src="{% static 'js/fontawesome.js' %}"></script>
+<script src="{% static 'js/base/base_top.js' %}"></script>
+
 <!-- 加载地图JSAPI脚本 -->
 <script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=A413DT59OvGqxFLVIukjSFyfQoE327kz"></script>
 <script type="text/javascript" src="//api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
 <script type="text/javascript" src="//api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
 <script type="text/javascript" src="//api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
 <script type="text/javascript" src="http://developer.baidu.com/map/custom/stylelist.js"></script>
-<script src="https://cdn.bootcss.com/echarts/4.3.0/echarts.js"></script>
-<script src="{% static 'js/fontawesome.js' %}"></script>
-<script src="{% static 'js/base/base_top.js' %}"></script>
 
 
 {% block script %}
