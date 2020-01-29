@@ -1,5 +1,7 @@
 body {
   background-color: #eee;
+  min-width: 1200px;
+
 }
 .form-register {
   max-width: 500px;

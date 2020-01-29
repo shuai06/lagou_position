@@ -19,7 +19,9 @@
           <form class='form-register' action="{% url 'authPro:register' %}" method="post">
 
                 {% if message %}
-                    <div class="alert alert-warning">{{ message }}</div>
+                    <div class="alert alert-warning">{{ message }}
+                    <span style="display: inline-block; float: right; cursor:pointer" class="small_x">X</span>
+                    </div>
                 {% endif %}
 
               <h2 class="text-center">欢迎注册</h2>
@@ -48,51 +50,6 @@
         </div>
     </div> <!-- /container -->
 {% endblock %}
-
-
-{#{% block content %}#}
-{#    <!-- 注册 -->#}
-{#<!-- container start -->#}
-{#<main id="container">#}
-{#  <div class="register-contain">#}
-{#    <div class="top-contain">#}
-{#      <h4 class="please-register">请注册</h4>#}
-{#      <a href="{% url 'authPro:login' %}" class="login">立即登录 &gt;</a>#}
-{#    </div>#}
-{#    <form action="" method="post" class="form-contain">#}
-{#      <div class="form-item">#}
-{#        <input type="tel" placeholder="请输入手机号" name="telephone" class="form-control" autocomplete="off" autofocus>#}
-{#      </div>#}
-{##}
-{#      <div class="form-item">#}
-{#        <input type="text" placeholder="请输入用户名" name="username" class="form-control" autocomplete="off">#}
-{#      </div>#}
-{#      <div class="form-item">#}
-{#        <input type="password" placeholder="请输入密码" name="password" class="form-control">#}
-{#      </div>#}
-{#      <div class="form-item">#}
-{#        <input type="password" placeholder="请确认密码" name="password_repeat" class="form-control">#}
-{#      </div>#}
-{#      <div class="form-item">#}
-{#        <input type="text" placeholder="请输入图形验证码" name="captcha_graph" class="form-captcha">#}
-{#        <a href="javascript:void(0);" class="captcha-graph-img">#}
-{#          <img src="{% url 'authPro:graph_captcha' %}" alt="验证码" title="点击刷新">#}
-{#        </a>#}
-{#      </div>#}
-{#      <div class="form-item">#}
-{#        <input type="submit" value="立即注册" class="register-btn">#}
-{#      </div>#}
-{#    </form>#}
-{#  </div>#}
-{#</main>#}
-{##}
-{##}
-{#{% endblock %}#}
-{##}
-
-
-
-
 
 
 {% block script %}

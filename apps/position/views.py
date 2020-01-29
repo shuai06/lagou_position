@@ -19,6 +19,8 @@ from django.views.decorators.http import require_GET, require_POST
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+
+from utils import mcache
 from .models import Position
 from .pa import PaPosition
 

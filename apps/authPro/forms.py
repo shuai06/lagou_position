@@ -10,6 +10,7 @@ from .models import User
 class LoginForm(forms.Form):
     username = forms.CharField(label="用户名", max_length=128, widget=forms.TextInput())
     password = forms.CharField(label="密码", max_length=256, widget=forms.PasswordInput())
+    # captcha = forms.CaptchaField(label='验证码')
     # widget = forms.PasswordInput用于指定该字段在form表单里表现为 < input type = 'password' / >，也就是密码输入框
     # graph_captcha = forms.CharField(max_length=4, min_length=4)
 
@@ -31,10 +32,7 @@ class LoginForm(forms.Form):
     #     return True
 
 
-
-
 class RegisterForm(forms.Form):
-
     username = forms.CharField(label="用户名", max_length=128, widget=forms.TextInput())
     email = forms.EmailField(label="邮箱", widget=forms.EmailInput())
     password = forms.CharField(label="密码", max_length=256, widget=forms.PasswordInput())

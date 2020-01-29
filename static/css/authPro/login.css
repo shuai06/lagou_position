@@ -1,5 +1,6 @@
 body {
   background-color: #eee;
+  min-width: 1200px;
 }
 .form-login {
   max-width: 500px;

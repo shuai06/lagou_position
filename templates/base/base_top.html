@@ -46,7 +46,7 @@
 {#                        <img src="{{ request.session.user_avatar.url }}" style="max-width: 20%; border-radius: 15%;"/>#}
                         <li class="dropdown" style="display: inline-block">
 {#                        头像#}
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-size: 16px;">{{ request.session.user_name }} <span class="caret"></span></a>
+                            <a href="" id="is_me" class="dropdown-toggle" data-toggle="dropdown">{{ request.session.user_name }} <span class="caret"></span></a>
                             <ul class="dropdown-menu" >
                                 <li><a href="{% url 'authPro:aboutme' %}">我的资料</a></li>
                                 <li><a href="#">...</a></li>
@@ -81,8 +81,9 @@
 
 
 
-<script src="{% static 'js/base/bootstrap-3.3.7/bootstrap.js' %}"></script>
+
 <script src="{% static 'js/base/jquery-3.3.1.js' %}"></script>
+<script src="{% static 'js/base/bootstrap-3.3.7/bootstrap.js' %}"></script>
 <script src="{% static 'js/position/echarts.js' %}"></script>
 <script src="{% static 'js/fontawesome.js' %}"></script>
 <script src="{% static 'js/base/base_top.js' %}"></script>

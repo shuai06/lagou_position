@@ -12,14 +12,23 @@ body{
     left: 0;
     top:0;
     width:200px;
-    height:949px;
+    height:100%;
     /*background-color: rgb(6,64,102);*/
     background-color: rgb(0, 36, 85);
 }
 
+#zw_name{
+    width: 75%;
+    top: 13px;
+    position: relative;
+    height: 30px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
 #container{
     margin-left:200px;
-    height:900px;
+    height:934px;
     margin-top: -20px;
     /*background: #F0AD4E;*/
 }

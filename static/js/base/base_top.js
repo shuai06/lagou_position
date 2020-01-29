@@ -24,7 +24,7 @@ $(document).ready(function () {
     }else if(id_str == "" || id_str == undefined){
         $("#t_index").addClass("active");
     }else {
-        "顶部导航没选中哦～～～"
+        console.log("顶部导航没选中哦～～～");
     }
 
 

@@ -231,7 +231,7 @@ html,body{
     margin-left: -105px;
 }
 .showMain .admRegMonthCase:before{
-    content:"薪资统计";
+    content:"公司规模";
     width: 240px;
     margin-left: -120px;
 }
@@ -241,7 +241,7 @@ html,body{
     margin-left: -90px;
 }
 .showMain .weekCaseRate:before{
-    content:"行业统计";
+    content:"行业领域";
     width: 240px;
     margin-left: -120px;
 }
@@ -524,7 +524,7 @@ html,body{
     font-size: 20px;
     position: absolute;
     top: 0;
-    min-width:200px;
+    min-width:100%;
 
     background-image: -webkit-radial-gradient(800px 800px at 400px 250px, rgb(2,22,84),rgb(11,74,156));
   	background-image: radial-gradient(800px 800px at 400px 150px, rgb(2,22,84),rgb(11,74,156));
@@ -548,7 +548,7 @@ html,body{
 
 .showCaseInfoMain {
     overflow: auto;
-    height: calc(100% - 2px);
+    height: calc(100% - 7px);
 }
 
 /* 弹窗结束修改 */

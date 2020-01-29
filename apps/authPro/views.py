@@ -14,23 +14,6 @@ from .models import User
 from django.db import connection
 
 
-def valid_data(login_form):
-    # 验证: 图形验证码
-    graph_captcha = login_form.cleaned_data.get('graph_captcha')
-    server_graph_captcha = mcache.get_key('graph_captcha')
-    print('graph_captcha')
-    print(graph_captcha)
-    print(server_graph_captcha)
-    if not server_graph_captcha:
-        # return self.add_error("graph_captcha", "图形验证码已过期")
-        return False
-
-    if graph_captcha.lower() != server_graph_captcha.lower():
-        # return self.add_error("graph_captcha", "图形验证码不正确")
-        return False
-
-    return True
-
 # 登录
 def LoginView(request):
     if request.method == 'GET':
@@ -40,42 +23,48 @@ def LoginView(request):
         login_form = LoginForm(request.POST)
         message = "请检查填写的内容！"
         # 验证: 图形验证码
-        # graph_valid = valid_data(login_form)
         if login_form.is_valid():
-            # graph_captcha = login_form.cleaned_data.get('graph_captcha')
-            # server_graph_captcha = mcache.get_key('graph_captcha')
-            # print("graph_captcha:   **************")
-            # print(graph_captcha)
-            # print(server_graph_captcha)
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            hash_psd = hash_code(password)
-            # 其他验证
-            try:
-                # user = User.objects.get(username=username)
-                sql = "select * from authPro_user where username='"+ username + "';"
-                # user = User.objects.filter(username=str(username))
-                cursor = connection.cursor()
-                cursor.execute(sql)
-                db_user_tuple = cursor.fetchone()
-                if db_user_tuple[2] == hash_psd:
-                    request.session['is_login'] = True
-                    request.session['user_id'] = db_user_tuple[0]
-                    request.session['user_name'] = db_user_tuple[1]
-                    request.session['user_email'] = db_user_tuple[3]
-                    request.session['user_jdate'] = str(db_user_tuple[4]).split(".")[0]
-                    # request.session['user_avatar'] = user.avatar
+            server_graph_captcha = mcache.get_key('graph_captcha')
+            graph_captcha = request.POST.get('captcha_graph') # 客户端验证码
 
-                    next_url = request.GET.get("next", '')
-                    if next_url:
-                        return redirect(next_url)
-                    else:
-                        return redirect("/")
+            print("************")
+            print(server_graph_captcha)
+            print(graph_captcha)
+            if server_graph_captcha:
+                if graph_captcha.lower() == server_graph_captcha.lower():
+                    username = request.POST.get('username')
+                    password = request.POST.get('password')
+                    hash_psd = hash_code(password)
+                    # 其他验证
+                    try:
+                        # user = User.objects.get(username=username)
+                        sql = "select * from authPro_user where username='"+ username + "';"
+                        # user = User.objects.filter(username=str(username))
+                        cursor = connection.cursor()
+                        cursor.execute(sql)
+                        db_user_tuple = cursor.fetchone()
+                        if db_user_tuple[2] == hash_psd:
+                            request.session['is_login'] = True
+                            request.session['user_id'] = db_user_tuple[0]
+                            request.session['user_name'] = db_user_tuple[1]
+                            request.session['user_email'] = db_user_tuple[3]
+                            request.session['user_jdate'] = str(db_user_tuple[4]).split(".")[0]
+                            # request.session['user_avatar'] = user.avatar
+
+                            next_url = request.GET.get("next", '')
+                            if next_url:
+                                return redirect(next_url)
+                            else:
+                                return redirect("/")
+                        else:
+                            message = "密码不正确！"
+                    except Exception as e:
+                        message = "用户不存在！"
+                        print(e)
                 else:
-                    message = "密码不正确！"
-            except Exception as e:
-                message = "用户不存在！"
-                print(e)
+                    message = "图形验证不正确"
+            else:
+                message = "验证码已过期"
         return render(request, 'authPro/login.html', locals())
 
 
