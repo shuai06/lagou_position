@@ -1,0 +1,112 @@
+body{
+    background-color: #eeeeee;
+}
+
+.item{
+    padding: 10px 0;
+    border-bottom: 1px solid silver;
+}
+.item .title{
+    font-size: 16px;
+    font-weight: 700;
+}
+.item .info{
+    font-weight: 300;
+    font-size: 13px;
+    color: darkgray;
+    padding-top: 19px;
+}
+.danger-info{
+    background-color: lightgray;
+    margin:20px 0;
+    height: 80px;
+    border-radius: 4px;
+    padding:13px 0;
+}
+.danger-info .info{
+    font-weight: 700;
+    padding-right: 0px;
+    font-size: 14px;
+}
+.danger-info .tel{
+    font-weight: 300;
+    color: ghostwhite;
+    padding-top: 15px;
+}
+
+
+/*坦洲*/
+.news-list .news-item {
+    list-style: none;
+    margin-bottom: 58px;
+
+}
+.news-list .news-item .news-content {
+    flex: 1;
+    color: #878787;
+    font-size: 14px;
+}
+.news-title{
+    color: #212121;
+    font-size: 22px;
+    height: 52px;
+    line-height: 26px;
+    transition:all 0.3s ease-out;
+}
+.news-content .news-title:hover {
+    color: #5b86db;
+    transition:all 0.3s ease-in;
+}
+.news-details {
+    height: 68px;
+    line-height: 22px;
+    margin-top: 10px;
+    text-align: justify;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+.news-content .news-other {
+    margin-top: 23px;
+}
+
+.news-content .news-other .news-author {
+    color: #5b86db;
+    float: right;
+    margin-right: 15px;
+}
+.news-content .news-other .news-time {
+    float: right;
+}
+/* == news-contain end == */
+/* == loading-img start == */
+.news-contain .loading-img {
+    height: 66px;
+    background: url(../../images/loading_white.gif) center/3%  no-repeat;
+}
+/* == loading-img end == */
+/* == loading-end start == */
+.news-contain .loading-end {
+    background: #e8dede;
+    line-height: 2.5;
+    text-align: center;
+    font-size: 18px;
+    color: #2d8f6f;
+}
+/* == loading-end end == */
+/* == btn-more start == */
+.btn-more {
+    display: block;
+    border: none;
+    width: 200px;
+    line-height: 40px;
+    text-align: center;
+    background: skyblue;
+    color: #efefef;
+    margin: 20px auto;
+}
+.btn-more:hover {
+    background: #54b9e2;
+}

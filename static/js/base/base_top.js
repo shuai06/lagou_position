@@ -21,6 +21,8 @@ $(document).ready(function () {
         $("#t_connect").addClass("active");
     }else if(id_str == "other"){
         $("#t_other").addClass("active");
+    }else if(id_str == "conn"){
+        $("#t_connect").addClass("active");
     }else if(id_str == "" || id_str == undefined){
         $("#t_index").addClass("active");
     }else {

@@ -1,0 +1,76 @@
+{% extends 'base/base_top.html' %}
+
+{% block title %} 文章【{{ news.title }}】 详情 {% endblock %}
+
+{% block link %}
+        <link rel="stylesheet" href="{% static 'css/connect/detail.css' %}">
+{%  endblock %}
+
+
+
+{%  block content %}
+
+<!--main start-->
+<main id="main">
+  <div class="w800 clearfix">
+    <!-- news-contain start  -->
+    <div class="news-contain">
+      <h1 class="news-title">{{ news.title }}</h1>
+      <div class="news-info" nid="{{ news.id }}" id="nidid">
+        <div class="news-info-left">
+          <span class="news-author">{{ news.author.username }}</span>
+          <span class="news-pub-time">{{ news.pub_time   }}</span>
+            {% if news.author.id == session_user_id  %}
+                <span class="del-myself-new">删除</span>
+            {% endif %}
+
+        </div>
+      </div>
+      <article class="news-content">
+{#         safe  转义 =》带样式   #}
+        {{ news.content |safe }}
+      </article>
+      <div class="comment-contain">
+        <div class="comment-pub clearfix">
+          <div class="new-comment">
+            文章评论(<span class="comment-count">0</span>)
+          </div>
+            {% if request.session.is_login %}
+                <div class="comment-control logged-comment">
+                    <input type="text" placeholder="请填写评论">
+                </div>
+                {#            可以给他加一个 data-news-id 可以直接在前端获取这个值来获取当前news的id#}
+                <button class="comment-btn" data-news-id="{{ news.id }}">发表评论</button>
+            {% else %}
+                <div class="comment-control please-login-comment" style="display:block;">
+                    <input type="text" placeholder="请登录后参加评论" readonly>
+                </div>
+            {% endif %}
+
+        </div>
+{#      评论区#}
+        <ul class="comment-list">
+        </ul>
+      </div>
+
+    </div>
+    <!-- news-contain end  -->
+
+  </div>
+</main>
+<!-- main end -->
+
+{% endblock %}
+
+
+
+
+
+{% block script %}
+    <script src="{% static 'js/base/xss.js' %}"></script>
+    <script src="{% static 'js/connect/detail.js' %}"></script>
+{%  endblock %}
+
+
+
+

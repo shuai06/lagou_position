@@ -43,6 +43,7 @@ const fAlert = {
       'title': '提示',
       'text': msg,
       'type': 'success',
+      'timer':2000,
     };
     swal(args, confirmCallback);
   },
@@ -59,6 +60,7 @@ const fAlert = {
       'text': msg,
       'type': 'success',
       'confirmButtonText': confirmButtonText,
+      // 'timer':2000,
     };
     swal(args, confirmCallback);
   },

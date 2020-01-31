@@ -10,21 +10,18 @@
 
 {%  block content %}
 
-    <h1>我是 Other 页面</h1>
-    <h2>我是 Other 页面</h2>
-    <h3>我是 Other 页面</h3>
-    <h4>我是 Other 页面</h4>
-    <h5>我是 Other 页面</h5>
-    <h6>我是 Other 页面</h6>
+
+    <div id="map_div"></div>
 
 {% endblock %}
 
 
 
 
-{##}
-{#{% block script %}#}
-{#{%  endblock %}#}
+
+{% block script %}
+    <script src="{% static 'js/position/other.js' %}"></script>
+{%  endblock %}
 
 
 

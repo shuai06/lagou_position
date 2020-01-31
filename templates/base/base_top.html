@@ -10,6 +10,7 @@
 {#    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">#}
     <link href="{% static 'css/base/bootstrap-3.3.7/bootstrap.css' %}" rel="stylesheet">
     <link href="{% static 'font-awesome-4.7.0/css/font-awesome.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static '/css/base/sweetalert.css' %}">
 
     <link rel="stylesheet" href="{% static 'css/base/base_top.css' %}">
     {% block link %}
@@ -36,8 +37,8 @@
                 <ul class="nav navbar-nav navbar-left">
                   <li class="haha" id="t_index"><a href="{% url 'position:index' %}">职位首页</a></li>
                   <li class="haha" id="t_analyze"><a href="{% url 'position:analyze' %}">统计分析</a></li>
-                  <li class="haha" id="t_connect"><a href="{% url 'position:connect' %}">求职交流</a></li>
-                  <li class="haha" id="t_other"><a href="{% url 'position:other' %}">其他</a></li>
+                  <li class="haha" id="t_connect"><a href="{% url 'connApp:display' %}">求职交流</a></li>
+{#                  <li class="haha" id="t_other"><a href="{% url 'position:other' %}">其他</a></li>#}
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -86,6 +87,12 @@
 <script src="{% static 'js/base/bootstrap-3.3.7/bootstrap.js' %}"></script>
 <script src="{% static 'js/position/echarts.js' %}"></script>
 <script src="{% static 'js/fontawesome.js' %}"></script>
+
+<script src="{% static 'js/base/sweetalert.min.js' %}"></script>
+<script src="{% static 'js/base/fsweetalert.js' %}"></script>
+<script src="{% static 'js/base/setup.js' %}"></script>
+<script src="{% static 'js/base/message.js' %}"></script>
+<script src="{% static 'js/base/common.js' %}"></script>
 <script src="{% static 'js/base/base_top.js' %}"></script>
 
 <!-- 加载地图JSAPI脚本 -->

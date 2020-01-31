@@ -1,5 +1,5 @@
 from django.urls import path, re_path, include
-from .views import get_pos, search_key_view, select_points, index, search, analyze, count_city, other, charCity, charXueli, charWorkJy, charWorkIndustry, charWorkSize, get_data_list, connect_view, get_word_view
+from .views import get_pos, search_key_view, select_points, index, search, analyze, count_city, other, charCity, charXueli, charWorkJy, charWorkIndustry, charWorkSize, get_data_list, get_word_view
 
 # 防止不同app中的URL的name产生冲突   reverse(appName:hello)
 app_name = 'position'
@@ -19,6 +19,5 @@ urlpatterns = [
     path('charWorkIndustry/', charWorkIndustry, name='charWorkIndustry'),
     path('charWorkSize/', charWorkSize, name='charWorkSize'),
     path('get_data_list/', get_data_list, name='get_data_list'),
-    path('connect/', connect_view, name='connect'),
     path('get_word_cloud/', get_word_view, name='get_word_cloud'),
 ]

@@ -19,8 +19,9 @@ $(function () {
                         "newpsd":firstPsd,
                     },
                     success:function (data) {
-                        alert("密码修改成功！");
-                        window.location.href="/";
+                        fAlert.alertNewsSuccessCallback("密码修改成功", "OK", () => {
+                         window.location.href="/";
+                        });
 
                     },
                     error: function () {

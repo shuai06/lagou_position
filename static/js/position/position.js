@@ -204,8 +204,12 @@ $("#btnPa").click(function (){
                        console.log("success!!!");
                        closeWin();
                        $("#zw_name").val("");
-                       alert("数据爬取完成,点击展示数据查看");
-                       window.location.reload();
+                       fAlert.alertSuccessCallback("数据爬取完成,点击展示数据查看",  () => {
+                        window.location.reload();
+                        });
+                       // alert("数据爬取完成,点击展示数据查看");
+                       // window.location.reload();
+
                    },
                    error: () => {
                        console.log("Error");

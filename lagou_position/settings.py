@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.position',
     'apps.authPro',
+    'apps.conn',
+    'apps.conn.templatetags',
     # 注册  帮助快速序列化
     'rest_framework',
 ]
@@ -145,5 +147,9 @@ MEDIA_URL = '/media/'
 
 
 LOGIN_URL = '/auth/login/'
+
+
+# 前台动态加载一页数据量
+ONE_PAGE_NEWS_COUNT = 6
 
 

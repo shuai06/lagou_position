@@ -1,0 +1,100 @@
+{% extends 'base/base_top.html' %}
+{% load news_filter %}
+
+{% block title %}  求职交流 {% endblock %}
+
+{% block link %}
+        <link rel="stylesheet" href="{% static 'css/connect/conn.css' %}">
+{%  endblock %}
+
+
+
+{%  block content %}
+
+
+<div class="container">
+   <div class="row">
+       <!--左边部分-->
+       <div class="col-md-2">
+       </div>
+
+       <!--中间部分-->
+       <div class="col-md-7">
+                    <!-- news-contain start -->
+        <div class="news-contain">
+              <ul class="news-list">
+                    {% for new in newses %}
+                      <li class="news-item" >
+            {#              # 过滤器传参#}
+                          <div class="news-content">
+                                <h4 class="news-title"><a href="{% url 'connApp:detail' news_id=new.id %}" target="_blank">{{ new.title }}</a></h4>
+                                <p class="news-details">{{ new.content }}</p>
+                                <div class="news-other">
+                                      <span class="news-time">{{ new.pub_time}}</span>
+                                      <span class="news-author">{{ new.author.username }}</span>
+                                </div>
+                          </div>
+                    </li>
+                    {% endfor %}
+              </ul>
+        </div>
+        <!-- news-contain end -->
+        <!-- btn-more start -->
+        <a href="javascript:void(0);" class="btn-more" data-page="2">加载更多</a>
+        <!-- btn-more end -->
+
+       </div>
+
+       <!--右边部分-->
+       <div class="col-md-3">
+           <!-- /input-group -->
+{#           <form class="form-group">#}
+{#               <input type="text" class="form-control search_in" style="height: 34px" placeholder="搜索文章...">#}
+{#               <span class="input-group-btn">#}
+{#                   <button class="btn btn-danger search_news" type="button" ><a href="{% url 'connApp:display' %}"></a>搜索</button>#}
+{#               </span>#}
+{#           </form>#}
+
+           <form class="form-inline" style="min-width: 1200px" method="get" action="{% url 'connApp:search' %}" target="_blank">
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control " name="q" style="height: 34px; width: 201px;"  placeholder="搜索文章...">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-danger">搜索</button>
+            </form>
+
+
+
+
+           <div class="row danger-info">
+               <div class="col-md-6">
+                   <button class="btn btn-info pull-left"><a href="{% url 'connApp:edit' %}" style="color: white">发表动态</a></button>
+               </div>
+               <div class="col-md-6 news_mine">
+                    <button class="btn btn-success pull-right"><a href="{% url 'connApp:my-pub' %}" style="color: white" target="_blank">我的文章</a></button>
+               </div>
+           </div>
+
+
+       </div>
+   </div>
+
+
+</div>
+
+{#<div class="row footer" style="bottom: 5px; position: absolute; margin-left: 40%">Copyright©2019-2020 薛彭帅 All Rights Reserved</div>#}
+
+{% endblock %}
+
+
+
+
+
+{% block script %}
+    <script src="{% static 'js/connect/connect.js' %}"></script>
+{%  endblock %}
+
+
+
+
