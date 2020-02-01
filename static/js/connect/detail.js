@@ -51,8 +51,6 @@ $commentBtn.click(function () {
         "news_id": $(this).data("news-id"),
       },
       success: res => {
-        console.log(res["data"]);
-        console.log(res);
         if (res["code"] === 0) {
           let data = res["data"];
           let comment = data["comment"];
@@ -112,7 +110,7 @@ $commentBtn.click(function () {
                   <span class="comment-user">${comment.author.username}</span>
                   <span class="comment-pub-time">${result}</span>
                 </div>
-                <div class="comment-content comment_txt">${comment.content}</div>
+                <div class="comment-content comment_txt">${comment.content | escape}</div>
               </li>
               `;
               // $commentList.prepend(commentStr);

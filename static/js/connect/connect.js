@@ -21,20 +21,23 @@ $(()=>{
                 // 成功的
                 // console.log(res);
                 if (res["code"] === 0) {
-                    let data = res["data"];
-                    let newses = data["newses"];
+                    let newses = res["data"]['newses'];
+                    // let newses = data["newses"];
 
                     if (newses.length > 0) {
                         // 遍历数据
                         newses.forEach((news) => {
-                            console.log(news);
-                            let pub_time = news["pub_time"];
+                            let newTime = new Date((news["pub_time"])).toJSON();
+                            let newTimes = new Date(+new Date(newTime)+8*3600*1000);
+                            let newT = newTimes.toISOString();
+                            let pub_times = newT.replace(/T/g,' ').replace(/\.[\d]{3}Z/,'').replace('-','年').replace('-','月').replace('-','日');
+                            let pub_time = pub_times.substring(0,pub_times.length -3);
                             // `` 模板字符串 ${news.title}
                             let newsStr = `
                                 <li class="news-item">
                                   <div class="news-content">
                                     <h4 class="news-title"><a href="/conn/detail/${news.id}" target="_blank">${news.title}</a></h4>
-<!--                                     <p class="news-details" >${news.content}</p>-->
+                                    <div class="news-details "> ${news.content} </div>
                                     <div class="news-other">
                                       <span class="news-time">${pub_time}</span>
                                       <span class="news-author">${news.author.username}</span>

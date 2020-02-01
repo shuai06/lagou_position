@@ -1,9 +1,10 @@
 from django.db import models
 
+
 # Create your models here.
 class News(models.Model):
     title = models.CharField(max_length=50, null=False)
-    content = models.TextField()
+    content = models.TextField(null=False)
     # 发布时间
     pub_time = models.DateTimeField(auto_now_add=True)
     is_delete = models.BooleanField(default=True)

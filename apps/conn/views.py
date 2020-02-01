@@ -22,8 +22,6 @@ def connect_dis_view(request):
         context = {
             "newses": newses,
         }
-        print(context.get(newses))
-        # return render(request, 'connect/connect.html', context=context)
         return render(request, 'connect/connect.html', context=context)
 
 
@@ -60,7 +58,7 @@ def search_view(request):
             newses = News.objects.defer('content').select_related('author').all()[0:settings.ONE_PAGE_NEWS_COUNT]
         context = {
             "newses": newses,
-            "s_key":q,
+            "s_key": q,
         }
         return render(request, 'connect/search.html', context=context)
 
@@ -118,6 +116,7 @@ def connect_detail_view(request, news_id):
     # 自动寻找
     except News.DoesNotExist:
         return render(request, '404.html')
+
 
 # 删除自己的文章
 def del_my_news(request):

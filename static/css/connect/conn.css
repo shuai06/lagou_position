@@ -59,6 +59,7 @@ body{
 }
 .news-details {
     height: 68px;
+    width: 100%;
     line-height: 22px;
     margin-top: 10px;
     text-align: justify;

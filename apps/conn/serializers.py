@@ -10,7 +10,7 @@ class NewsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = News
-        fields = ('id', 'title', 'pub_time','is_delete', 'content', 'author')
+        fields = ('id', 'title', 'pub_time',  'is_delete', 'content', 'author')
 
 
 # 文章评论模型序列化

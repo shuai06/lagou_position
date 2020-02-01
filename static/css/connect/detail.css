@@ -49,9 +49,9 @@
 .news-contain .news-content {
   margin-top: 25px;
 }
-.news-contain .news-content  img {
-  width: 100% !important;
-}
+/*.news-contain .news-content  img {*/
+/*  width: 100% !important;*/
+/*}*/
 
 #main .comment-contain {
   width: 750px;

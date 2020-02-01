@@ -25,7 +25,6 @@
               <ul class="news-list">
                     {% for new in newses %}
                       <li class="news-item" >
-            {#              # 过滤器传参#}
                           <div class="news-content">
                                 <h4 class="news-title"><a href="{% url 'connApp:detail' news_id=new.id %}" target="_blank">{{ new.title }}</a></h4>
                                 <p class="news-details">{{ new.content }}</p>
