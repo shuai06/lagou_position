@@ -1,6 +1,6 @@
 import json
 import time
-
+import requests
 import jieba
 from django.db.models import Q
 from wordcloud import WordCloud
@@ -110,6 +110,15 @@ def get_data_list(request):
         return HttpResponse(position_res, content_type="application/json")   # 职位数据json
 
 
+# 获取代理
+def get_proxy():
+    # 111.206.217.186:8082
+    return requests.get("http://127.0.0.1:5010/get/").json().get("proxy")
+
+def delete_proxy(proxy):
+    requests.get("http://127.0.0.1:5010/delete/?proxy={}".format(proxy))
+
+
 # 点击爬取职位信息
 def search(request):
     if request.method == "POST":
@@ -125,7 +134,8 @@ def search(request):
                 Position.objects.filter(user_id=request.session.get('user_id')).delete()
 
             url = " https://www.lagou.com/jobs/positionAjax.json?needAddtionalResult=false"
-            pa = PaPosition(canshu, request.session['user_id'])
+            proxie = {"http": "http://{}".format(get_proxy())}
+            pa = PaPosition(canshu, request.session['user_id'], proxies=proxie)
             # 用户输入的参数
             first_page = pa.get_json(url, 1, canshu)  # 先获取第一页数据
             total_page_count = first_page['content']['positionResult']['totalCount']  # 职位总数
@@ -135,6 +145,9 @@ def search(request):
             print("{0}相关职位总数:{1},总页数为:{2}".format(canshu, total_page_count, num))
             # 正式开始
             for num in range(1, num + 1):
+                # 每一轮都更换代理
+                pa.proxies = {"http": "http://{}".format(get_proxy())}
+                print("代理： " + str( pa.proxies))
                 # 获取【每一页】的职位相关的信息
                 page_data = pa.get_json(url, num, canshu)  # 获取响应json
                 jobs_list = page_data['content']['positionResult']['result']  # 获取每页的所有gis相关的职位信息

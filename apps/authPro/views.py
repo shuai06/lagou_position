@@ -27,9 +27,6 @@ def LoginView(request):
             server_graph_captcha = mcache.get_key('graph_captcha')
             graph_captcha = request.POST.get('captcha_graph') # 客户端验证码
 
-            print("************")
-            print(server_graph_captcha)
-            print(graph_captcha)
             if server_graph_captcha:
                 if graph_captcha.lower() == server_graph_captcha.lower():
                     username = request.POST.get('username')

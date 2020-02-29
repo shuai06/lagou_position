@@ -23,9 +23,10 @@ db_config = {
 
 class PaPosition(object):
 
-    def __init__(self, cname, user_id):
+    def __init__(self, cname, user_id, proxies):
         self.name = cname
         self.user_id = user_id
+        self.proxies = proxies
 
     def get_json(self, url, num, name):
         qname = quote(name)  # 转码
@@ -50,7 +51,7 @@ class PaPosition(object):
         cookie = s.cookies
         print('获取cookie：', cookie, '\n\n')
         # 前面都是铺垫
-        res = requests.post(url, headers=headers, data=data, cookies=cookie, timeout=3)
+        res = requests.post(url, headers=headers, data=data, cookies=cookie, timeout=3, proxies=self.proxies)
         # res.raise_for_status()
         if res.status_code == '404':
             print(res.status_code)
@@ -116,7 +117,7 @@ class PaPosition(object):
                 company_fuli = ','.join(str(s) for s in i[12])
                 # insert into student values(id,name,age)
                 sql = """insert into position_position values(%d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s', '%s','%s', '%s')""" % (
-                j, i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10], i[11], company_fuli, i[13], i[14], i[15], i[16], i[17], self.user_id, 0)
+                j, i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10], i[11], company_fuli, i[13], i[14], i[15], i[16], i[17], self.user_id, 0)  # j是id吗
                 print(sql)
                 cursor.execute(sql)
 
@@ -125,14 +126,16 @@ class PaPosition(object):
             j += 1
 
         except Exception as e:
-            print('数据入库 error')
+            print('数据入库 error start')
             print(e)
+            print('数据入库 error end ')
             conn.rollback()
 
         finally:
             conn.commit()  # 数据有变动一定记得提交/双保险
             # cursor.close()
             conn.close()
+
 
 
 

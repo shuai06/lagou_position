@@ -5,7 +5,7 @@ Click==7.0
 click-plugins==1.1.1
 colorama==0.4.3
 cycler==0.10.0
-Django==3.0
+Django==3.0.2
 djangorestframework==3.11.0
 entrypoints==0.3
 flake8==3.7.9
